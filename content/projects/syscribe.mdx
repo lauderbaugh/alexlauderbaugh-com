@@ -1,0 +1,30 @@
+---
+title: "Syscribe"
+status: "Building"
+category: "Software"
+summary: "AI-powered documentation that auto-generates from PR diffs and ships when humans approve."
+weekMarker: "Week 5 of 12"
+currentFocus:
+  - "Reducing changelog noise: shipping a role-aware diff pipeline that filters out internal refactors before they reach the writer model."
+  - "Designing the human-in-the-loop review surface. Aiming for a one-keystroke approve / edit / discard flow."
+links:
+  - label: "syscribe.dev"
+    href: "#"
+  - label: "Waitlist"
+    href: "#"
+  - label: "Related writing"
+    href: "#"
+draft: false
+---
+
+Syscribe is a documentation platform for teams that ship faster than they can write. It watches your pull requests, drafts the changelog entry, the user-facing release note, and (optionally) the internal Loom-style summary — then waits for a human to approve before anything is published.
+
+I started building it because every engineering org I've worked in has the same broken loop: PRs get merged, documentation drifts, and within six months the internal wiki is a lie. The teams that solve it spend a real percentage of their cycle time writing release notes by hand. That cost is invisible until you measure it.
+
+### What's hard
+
+The model is not the hard part. Routing is. Knowing which changes deserve a customer-facing line, which are internal-only, and which should be silently swallowed is mostly a taxonomy problem and partly a context problem. We're solving it with a small classifier that runs ahead of the writer model, and a per-repo policy that gets richer the more it ships.
+
+### What I'm learning
+
+Selling to small engineering teams is a different motion to anything I've done. Buying committees of one. Cycles measured in days, not quarters. I've talked to thirty-eight teams in the last six weeks and the pattern is consistent enough that I trust it.
