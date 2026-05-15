@@ -1,0 +1,961 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Alex Lauderbaugh</title>
+    <meta name="description" content="Product leader and builder. CPO at BettrData, building Syscribe. Based in Auckland." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              serif: ['"Source Serif 4"', "ui-serif", "Georgia", "serif"],
+              sans: ["Inter", "ui-sans-serif", "system-ui", "-apple-system", "sans-serif"],
+              mono: ['"JetBrains Mono"', "ui-monospace", "monospace"],
+            },
+            colors: {
+              paper: "#FAFAF7",
+              ink: "#1A1A1A",
+              muted: "#5A5A55",
+              rule: "#E6E4DC",
+              accent: "#2D4A3E",
+              "accent-hover": "#1F3329",
+              "d-bg": "#16161A",
+              "d-ink": "#EDEAE3",
+              "d-muted": "#8A8780",
+              "d-rule": "#2A2A2E",
+              "d-accent": "#C5B4E3",
+              "d-accent-hover": "#D6C9EC",
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      html, body {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+      body {
+        font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+        font-feature-settings: "ss01", "cv11";
+      }
+      .serif { font-family: "Source Serif 4", ui-serif, Georgia, serif; }
+      .mono { font-family: "JetBrains Mono", ui-monospace, monospace; font-feature-settings: "ss01"; }
+      .smallcaps { font-variant-caps: all-small-caps; letter-spacing: 0.08em; }
+      .prose-body p { line-height: 1.7; }
+      .prose-body p + p { margin-top: 1.1em; }
+      .prose-body h3 {
+        font-family: "Source Serif 4", serif;
+        font-weight: 500;
+        font-size: 1.25rem;
+        margin-top: 2.2em;
+        margin-bottom: 0.6em;
+      }
+      .prose-body a {
+        text-decoration: underline;
+        text-underline-offset: 3px;
+        text-decoration-thickness: 1px;
+      }
+      .link {
+        text-decoration: underline;
+        text-underline-offset: 3px;
+        text-decoration-thickness: 1px;
+        text-decoration-color: currentColor;
+      }
+      .link:hover { text-decoration-thickness: 1.5px; }
+      .arrow-link:hover .arrow { transform: translateX(2px); }
+      .arrow { display: inline-block; transition: transform 180ms ease; }
+      .view-enter { animation: viewIn 280ms ease; }
+      @keyframes viewIn {
+        from { transform: translateY(4px); }
+        to { transform: none; }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .view-enter { animation: none; }
+      }
+      ::selection { background: #2d4a3e; color: #fafaf7; }
+      .dark ::selection { background: #c5b4e3; color: #1a1a1c; }
+      :focus-visible { outline: 2px solid #2d4a3e; outline-offset: 3px; border-radius: 2px; }
+      .dark :focus-visible { outline-color: #c5b4e3; }
+      .type-dot { width: 6px; height: 6px; border-radius: 999px; display: inline-block; flex: none; }
+      @keyframes portraitIn { from { opacity: 0; } to { opacity: 1; } }
+    </style>
+
+    <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin="anonymous"></script>
+  </head>
+  <body class="bg-paper text-ink dark:bg-d-bg dark:text-d-ink transition-colors duration-200">
+    <div id="root"></div>
+
+    <script type="text/babel" data-presets="env,react">
+      const { useState, useEffect, useMemo, useCallback } = React;
+
+      // ─────────────────────────────────────────────────────────────────────────
+      // Content
+      // ─────────────────────────────────────────────────────────────────────────
+
+      const SITE = {
+        name: "Alex Lauderbaugh",
+        location: "Auckland, New Zealand",
+        whereLine:
+          "Auckland · Building Syscribe · CPO at BettrData · Open to investor conversations.",
+        intro:
+          "Product leader and builder. Currently CPO at BettrData and building Syscribe, an AI-powered documentation platform. Based in Auckland — mostly writing about product, systems, and what I'm reading.",
+        social: [
+          { label: "LinkedIn", href: "#" },
+          { label: "GitHub", href: "#" },
+          { label: "Twitter", href: "#" },
+          { label: "Email", href: "mailto:hi@lauderbaugh.co" },
+          { label: "RSS", href: "#" },
+        ],
+        lastUpdated: "May 14, 2026",
+      };
+
+      const TYPES = {
+        build: { label: "Build" },
+        book: { label: "Book" },
+        note: { label: "Note" },
+        ship: { label: "Ship" },
+      };
+
+      const LOG = [
+        {
+          id: "syscribe-w5",
+          date: "May 12, 2026",
+          type: "build",
+          title: "Syscribe · Week 5",
+          project: "Syscribe",
+          body: [
+            "Spent the week ripping out the first pass at diff parsing. The naive approach — feeding the raw PR patch to the model — works for trivial changes but falls apart the moment a refactor touches more than three files. Reasoning gets diluted, edits sprawl.",
+            "Replaced it with a two-stage pipeline: a fast structural pass tags every hunk with a role (feature / refactor / move / config), then a slower pass writes only the entries that the role taxonomy says are user-visible. Output dropped from twenty-three noisy lines to four useful ones on the test repo. The right call almost always is to do less.",
+          ],
+        },
+        {
+          id: "antifragile",
+          date: "May 9, 2026",
+          type: "book",
+          title: "Antifragile",
+          author: "Nassim Nicholas Taleb",
+          rating: "★ would re-read",
+          body: [
+            "Reread, third time. The core idea — some systems gain from disorder — still lands, but the chapters on optionality and the via negativa are the ones I keep returning to as an operator. Product roadmaps are mostly an exercise in pruning, not adding.",
+          ],
+        },
+        {
+          id: "panpacs-w8",
+          date: "May 7, 2026",
+          type: "build",
+          title: "Pan Pacs prep · Week 8",
+          project: "Pan Pacs Masters Track Cycling",
+          body: [
+            "Two threshold blocks on the track at Manukau. Holding 340w for the flying 200 is starting to feel repeatable; the gap is now the standing start. Coach has me adding a second gym session — single-leg press, hip thrust, nothing fancy.",
+            "Eight weeks until Sydney. The plan survives contact with my legs so far.",
+          ],
+        },
+        {
+          id: "bettrdata-ship",
+          date: "May 5, 2026",
+          type: "ship",
+          title: "Shipped: pipeline observability v2 at BettrData",
+          body: [
+            "Six months of work. Customers can now see end-to-end lineage on any record, with a timeline view of every transform it passed through. The internal demo got the rarest of reactions — a long quiet pause followed by 'so when can we have this for our other pipelines.'",
+          ],
+        },
+        {
+          id: "mom-test",
+          date: "Apr 28, 2026",
+          type: "book",
+          title: "The Mom Test",
+          author: "Rob Fitzpatrick",
+          rating: "★ would re-read",
+          body: [
+            "Short, sharp, and a useful re-read every time I'm about to start customer conversations. Currently doing Syscribe discovery calls and catching myself pitching three sentences in. The book's prescription is simple: don't.",
+          ],
+        },
+        {
+          id: "note-roadmap",
+          date: "Apr 22, 2026",
+          type: "note",
+          title: "On roadmaps that survive the quarter",
+          body: [
+            "Every roadmap I've shipped that held up had the same shape: one big bet, two supporting bets, and a deliberate empty column for whatever the market does to us. The empty column is the trick. If you fill it in January you have nowhere to put February's surprise.",
+            "The teams that hate this usually want certainty more than they want correctness. Worth saying out loud.",
+          ],
+        },
+        {
+          id: "working-in-public",
+          date: "Apr 14, 2026",
+          type: "book",
+          title: "Working in Public",
+          author: "Nadia Eghbal",
+          rating: "★ would re-read",
+          body: [
+            "The framing of maintainers as a class — and the asymmetric attention economy they live inside — is the part I keep citing. Useful adjacent reading for anyone thinking about developer tools or open-source-adjacent businesses.",
+          ],
+        },
+        {
+          id: "syscribe-w3",
+          date: "Apr 9, 2026",
+          type: "build",
+          title: "Syscribe · Week 3",
+          project: "Syscribe",
+          body: [
+            "First end-to-end demo working against a real repo (mine). Watching the model draft a changelog entry, route it to a reviewer, accept the edit, and publish — without me touching anything — was the moment the idea stopped being abstract.",
+          ],
+        },
+      ];
+
+      const BOOKS = LOG.filter((e) => e.type === "book");
+
+      const PROJECTS = [
+        {
+          id: "syscribe",
+          title: "Syscribe",
+          status: "Building",
+          category: "Software",
+          summary:
+            "AI-powered documentation that auto-generates from PR diffs and ships when humans approve.",
+          weekMarker: "Week 5 of 12",
+          currentFocus: [
+            "Reducing changelog noise: shipping a role-aware diff pipeline that filters out internal refactors before they reach the writer model.",
+            "Designing the human-in-the-loop review surface. Aiming for a one-keystroke approve / edit / discard flow.",
+          ],
+          body: [
+            { kind: "p", text: "Syscribe is a documentation platform for teams that ship faster than they can write. It watches your pull requests, drafts the changelog entry, the user-facing release note, and (optionally) the internal Loom-style summary — then waits for a human to approve before anything is published." },
+            { kind: "p", text: "I started building it because every engineering org I've worked in has the same broken loop: PRs get merged, documentation drifts, and within six months the internal wiki is a lie. The teams that solve it spend a real percentage of their cycle time writing release notes by hand. That cost is invisible until you measure it." },
+            { kind: "h3", text: "What's hard" },
+            { kind: "p", text: "The model is not the hard part. Routing is. Knowing which changes deserve a customer-facing line, which are internal-only, and which should be silently swallowed is mostly a taxonomy problem and partly a context problem. We're solving it with a small classifier that runs ahead of the writer model, and a per-repo policy that gets richer the more it ships." },
+            { kind: "h3", text: "What I'm learning" },
+            { kind: "p", text: "Selling to small engineering teams is a different motion to anything I've done. Buying committees of one. Cycles measured in days, not quarters. I've talked to thirty-eight teams in the last six weeks and the pattern is consistent enough that I trust it." },
+          ],
+          links: [
+            { label: "syscribe.dev", href: "#" },
+            { label: "Waitlist", href: "#" },
+            { label: "Related writing", href: "#" },
+          ],
+        },
+        {
+          id: "panpacs",
+          title: "Pan Pacs Masters Track Cycling",
+          status: "Building",
+          category: "Athletics",
+          summary: "Race in Sydney, Nov 2026 — Masters 35-39, sprint and 500m TT.",
+          weekMarker: "Week 8 of 28",
+          currentFocus: [
+            "Building peak power into a repeatable standing-start. Two short track sessions per week plus single-leg gym work.",
+            "Holding aerobic base on the road so the taper into October isn't a cliff.",
+          ],
+          body: [
+            { kind: "p", text: "Six months out from the Pan Pacific Masters Games. Two events on the track: the flying 200m sprint qualifier and the 500m time trial. I picked them because they sit at opposite ends of the same physiological line — one is twelve seconds of nothing-held-back, the other is thirty-five seconds of pacing under load." },
+            { kind: "p", text: "I've raced road and crit since university but the track is new ground for me. Different bike, different fit, different mental model. The first session in March I qualified in the back half of the field. The most recent one I was top five. The arc is the point." },
+            { kind: "h3", text: "Training block" },
+            { kind: "p", text: "Five days on the bike, two in the gym, one full rest. The gym work is unsexy — heavy hip thrust, single-leg press, banded glute work — but it's the difference between a sprint that opens at 1100w and one that opens at 1300w. I track power, sleep, and morning resting heart rate. Everything else is noise." },
+            { kind: "h3", text: "Why it's a project" },
+            { kind: "p", text: "Because it has a deadline, an outcome that can be measured against the field, and a plan that can be wrong. That's a project. Calling it a hobby would lower the bar." },
+          ],
+          links: [
+            { label: "Strava", href: "#" },
+            { label: "Pan Pacs entry list", href: "#" },
+          ],
+        },
+        {
+          id: "bjj-map",
+          title: "BJJ Map",
+          status: "Active",
+          category: "Software",
+          summary: "Interactive Brazilian Jiu-Jitsu position graph — what flows to what, with annotated transitions.",
+          weekMarker: null,
+          currentFocus: [
+            "Adding video clips to the highest-traffic transitions: closed guard → scissor sweep, side control → mount.",
+          ],
+          body: [
+            { kind: "p", text: "A node-link graph of BJJ positions and the techniques that connect them. Built originally as a way to organize my own notes; it now gets a few hundred unique visitors a month from search." },
+            { kind: "p", text: "It runs as a static site with a tiny graph viewer I wrote in vanilla JS — no React, no framework, no bundler. The whole thing weighs less than a single Next.js page. Sometimes the right stack is none." },
+          ],
+          links: [{ label: "bjjmap.co", href: "#" }],
+        },
+        {
+          id: "purple-belt",
+          title: "Purple belt progression",
+          status: "Active",
+          category: "Athletics",
+          summary: "Twelve-month technical arc — guard retention, leg entanglements, top pressure.",
+          weekMarker: "Month 7 of 12",
+          currentFocus: [
+            "Living in deep half guard for the next four weeks until the entries stop being conscious.",
+            "Drilling the same three top-side passes (knee cut, leg drag, long step) until I stop thinking about which one to use.",
+          ],
+          body: [
+            { kind: "p", text: "Twelve months of deliberate progression, organized into three four-month blocks: bottom game, top game, and submissions. Each block has a single technical focus and a small list of techniques I'm trying to take from conscious to unconscious." },
+            { kind: "p", text: "I run it like a roadmap. One big bet, two supporting bets, and a column for whatever shows up in rolling that I want to chase. So far this year the surprise column has been leg entanglements — I'd been avoiding them and they've quietly become the thing I'm best at." },
+          ],
+          links: [],
+        },
+        {
+          id: "bettrdata-strat",
+          title: "BettrData competitive disruption work",
+          status: "Shipped",
+          category: "Software",
+          summary: "Six-month strategy and GTM analysis — repositioned the platform against three incumbents and reset pricing.",
+          weekMarker: null,
+          currentFocus: [],
+          body: [
+            { kind: "p", text: "Internal strategy work, run as a project rather than a deck. I spent six months pulling apart how three incumbent platforms were winning, where their pricing was load-bearing, and where the wedge for a focused operations platform actually was. The output was a repositioning, a new pricing model, and a quarter of GTM tests that gave us the answer." },
+            { kind: "p", text: "Most of the work was unglamorous: thirty customer interviews, a competitive teardown that ran to forty pages, and a pricing experiment that cost us two deals before it started winning them. Strategy is a verb." },
+          ],
+          links: [],
+        },
+      ];
+
+      const STATUS_ORDER = ["Building", "Active", "Shipped", "Archived"];
+
+      // ─────────────────────────────────────────────────────────────────────────
+      // Shared components
+      // ─────────────────────────────────────────────────────────────────────────
+
+      function useAccentVar() {
+        useEffect(() => {
+          const root = document.documentElement;
+          const apply = () => {
+            const dark = root.classList.contains("dark");
+            root.style.setProperty("--accent", dark ? "#C5B4E3" : "#2D4A3E");
+          };
+          apply();
+          const obs = new MutationObserver(apply);
+          obs.observe(root, { attributes: true, attributeFilter: ["class"] });
+          return () => obs.disconnect();
+        }, []);
+      }
+
+      function ThemeToggle({ theme, setTheme }) {
+        const dark = theme === "dark";
+        return (
+          <button
+            onClick={() => setTheme(dark ? "light" : "dark")}
+            className="mono text-[11px] uppercase tracking-[0.14em] text-muted dark:text-d-muted hover:text-ink dark:hover:text-d-ink transition-colors"
+            aria-label={dark ? "Switch to light mode" : "Switch to dark mode"}
+            title={dark ? "Switch to light mode" : "Switch to dark mode"}
+          >
+            {dark ? "light" : "dark"}
+          </button>
+        );
+      }
+
+      function Header({ route, navigate, theme, setTheme }) {
+        const navItems = [
+          { id: "log", label: "Log" },
+          { id: "books", label: "Books" },
+          { id: "projects", label: "Projects" },
+          { id: "principles", label: "Principles" },
+          { id: "about", label: "About" },
+        ];
+        return (
+          <header className="pt-10 sm:pt-14 pb-8">
+            <div className="flex items-baseline justify-between gap-6">
+              <button
+                onClick={() => navigate({ view: "home" })}
+                className="serif text-[17px] font-medium tracking-tight hover:text-accent dark:hover:text-d-accent transition-colors"
+              >
+                Alex Lauderbaugh
+              </button>
+              <nav className="flex items-center gap-5 sm:gap-7">
+                {navItems.map((item) => {
+                  const active =
+                    route.view === item.id ||
+                    (item.id === "projects" && (route.view === "projects" || route.view === "project"));
+                  return (
+                    <button
+                      key={item.id}
+                      onClick={() => navigate({ view: item.id })}
+                      className={
+                        "text-[14px] transition-colors " +
+                        (active
+                          ? "text-accent dark:text-d-accent"
+                          : "text-muted dark:text-d-muted hover:text-ink dark:hover:text-d-ink")
+                      }
+                    >
+                      {item.label}
+                    </button>
+                  );
+                })}
+                <span className="hidden sm:inline-block w-px h-3 bg-rule dark:bg-d-rule" />
+                <ThemeToggle theme={theme} setTheme={setTheme} />
+              </nav>
+            </div>
+            <p className="mono text-[12px] mt-6 text-muted dark:text-d-muted">
+              <span className="inline-block w-1.5 h-1.5 rounded-full bg-accent dark:bg-d-accent mr-2 align-middle" />
+              {SITE.whereLine}
+            </p>
+          </header>
+        );
+      }
+
+      function Footer() {
+        return (
+          <footer className="mt-24 pt-8 pb-14 border-t border-rule dark:border-d-rule">
+            <p className="mono text-[12px] text-muted dark:text-d-muted">
+              {SITE.location} · Last updated {SITE.lastUpdated}
+            </p>
+            <p className="text-[13px] mt-2 text-muted dark:text-d-muted">
+              {SITE.social.map((s, i) => (
+                <React.Fragment key={s.label}>
+                  {i > 0 && <span className="mx-1.5 text-rule dark:text-d-rule">·</span>}
+                  <a href={s.href} className="link hover:text-ink dark:hover:text-d-ink">{s.label}</a>
+                </React.Fragment>
+              ))}
+            </p>
+            <p className="mt-4">
+              <a href="#" className="arrow-link mono text-[12px] text-muted dark:text-d-muted hover:text-ink dark:hover:text-d-ink">
+                <span className="arrow">→</span> Edit this page on github
+              </a>
+            </p>
+          </footer>
+        );
+      }
+
+      function TypeBadge({ type }) {
+        return (
+          <span className="inline-flex items-center gap-1.5">
+            <span className="type-dot bg-accent dark:bg-d-accent" aria-hidden="true" />
+            <span className="mono text-[11px] uppercase tracking-[0.14em] text-muted dark:text-d-muted">
+              {TYPES[type]?.label || type}
+            </span>
+          </span>
+        );
+      }
+
+      function FilterRow({ options, value, onChange }) {
+        return (
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mono text-[12px] uppercase tracking-[0.14em]">
+            {options.map((opt, i) => {
+              const active = opt.value === value;
+              return (
+                <React.Fragment key={opt.value}>
+                  {i > 0 && <span className="text-rule dark:text-d-rule">·</span>}
+                  <button
+                    onClick={() => onChange(opt.value)}
+                    className={
+                      "transition-colors " +
+                      (active
+                        ? "text-accent dark:text-d-accent"
+                        : "text-muted dark:text-d-muted hover:text-ink dark:hover:text-d-ink")
+                    }
+                  >
+                    {opt.label}
+                  </button>
+                </React.Fragment>
+              );
+            })}
+          </div>
+        );
+      }
+
+      function ArrowLink({ children, onClick, href, className = "" }) {
+        const Tag = href ? "a" : "button";
+        const props = href ? { href } : { onClick };
+        return (
+          <Tag
+            {...props}
+            className={
+              "arrow-link inline-flex items-center gap-1.5 text-[14px] text-accent dark:text-d-accent hover:text-accent-hover dark:hover:text-d-accent-hover transition-colors " +
+              className
+            }
+          >
+            <span className="arrow">→</span>
+            <span>{children}</span>
+          </Tag>
+        );
+      }
+
+      function LogEntry({ entry, compact = false }) {
+        return (
+          <article className="grid grid-cols-1 sm:grid-cols-[110px_1fr] gap-x-8 gap-y-2 py-7">
+            <div className="pt-1">
+              <div className="mono text-[12px] text-muted dark:text-d-muted">{entry.date}</div>
+            </div>
+            <div>
+              <div className="flex items-center gap-3 mb-2">
+                <TypeBadge type={entry.type} />
+                {entry.project && (
+                  <span className="mono text-[11px] uppercase tracking-[0.14em] text-muted dark:text-d-muted">
+                    · {entry.project}
+                  </span>
+                )}
+              </div>
+              <h3 className="serif text-[22px] font-medium leading-snug tracking-tight">{entry.title}</h3>
+              {entry.author && (
+                <p className="text-[14px] text-muted dark:text-d-muted mt-1">
+                  {entry.author}
+                  {entry.rating && (
+                    <span className="mono text-[12px] ml-3 text-accent dark:text-d-accent">{entry.rating}</span>
+                  )}
+                </p>
+              )}
+              <div className="prose-body mt-3 text-[16px] text-ink dark:text-d-ink max-w-[58ch]">
+                {(compact ? entry.body.slice(0, 1) : entry.body).map((p, i) => (
+                  <p key={i}>{p}</p>
+                ))}
+              </div>
+            </div>
+          </article>
+        );
+      }
+
+      function ProjectRow({ project, onOpen }) {
+        return (
+          <button
+            onClick={() => onOpen(project.id)}
+            className="group block w-full text-left py-6 border-b border-rule dark:border-d-rule"
+          >
+            <div className="flex items-baseline justify-between gap-6 flex-wrap">
+              <h3 className="serif text-[22px] font-medium tracking-tight group-hover:text-accent dark:group-hover:text-d-accent transition-colors">
+                {project.title}
+              </h3>
+              <div className="mono text-[11px] uppercase tracking-[0.14em] text-muted dark:text-d-muted">
+                {project.status} · {project.category}
+                {project.weekMarker && <span> · {project.weekMarker}</span>}
+              </div>
+            </div>
+            <p className="text-[15px] mt-2 text-ink/85 dark:text-d-ink/85 max-w-[58ch]">{project.summary}</p>
+            <span className="arrow-link inline-flex items-center gap-1.5 text-[13px] mt-3 text-accent dark:text-d-accent">
+              <span className="arrow">→</span> Read more
+            </span>
+          </button>
+        );
+      }
+
+      function PageShell({ children, route }) {
+        return (
+          <div key={JSON.stringify(route)} className="view-enter max-w-[720px] mx-auto px-6 sm:px-8">
+            {children}
+          </div>
+        );
+      }
+
+      function Portrait({ size = 112, shape = "rounded", style = "etch", theme = "light" }) {
+        const radius = shape === "circle" ? "9999px" : shape === "square" ? "2px" : "6px";
+        const src = `assets/portrait-${style}-${theme}.png`;
+        return (
+          <div
+            className="relative shrink-0 overflow-hidden bg-rule dark:bg-d-rule"
+            style={{ width: size, height: size, borderRadius: radius }}
+            aria-label="Portrait of Alex Lauderbaugh"
+          >
+            <img
+              key={src}
+              src={src}
+              alt=""
+              width={size}
+              height={size}
+              className="block w-full h-full object-cover"
+              style={{ animation: "portraitIn 380ms ease both" }}
+              draggable={false}
+            />
+          </div>
+        );
+      }
+
+      // ─────────────────────────────────────────────────────────────────────────
+      // Views
+      // ─────────────────────────────────────────────────────────────────────────
+
+      function HomeView({ navigate, portrait }) {
+        const latest = LOG[0];
+        const recentBooks = BOOKS.slice(0, 3);
+        const syscribe = PROJECTS.find((p) => p.id === "syscribe");
+
+        return (
+          <React.Fragment>
+            <section className="pt-6 pb-2">
+              <div className="flex items-start gap-6 sm:gap-7">
+                <div className="min-w-0 flex-1">
+                  <h1 className="serif text-[36px] sm:text-[38px] font-medium tracking-tight leading-[1.1]">
+                    Alex Lauderbaugh
+                  </h1>
+                  <p className="mono text-[12px] mt-2 text-muted dark:text-d-muted">
+                    Product leader · Builder · Auckland
+                  </p>
+                </div>
+                {portrait && portrait.show && (
+                  <Portrait
+                    size={112}
+                    shape={portrait.shape}
+                    style={portrait.style}
+                    theme={portrait.theme}
+                  />
+                )}
+              </div>
+              <p className="mt-7 text-[17px] leading-[1.7] text-ink dark:text-d-ink max-w-[58ch]">
+                {SITE.intro}
+              </p>
+              <p className="mt-5 text-[14px] text-muted dark:text-d-muted">
+                {SITE.social.slice(0, 4).map((s, i) => (
+                  <React.Fragment key={s.label}>
+                    {i > 0 && <span className="mx-1.5 text-rule dark:text-d-rule">·</span>}
+                    <a href={s.href} className="link hover:text-ink dark:hover:text-d-ink">{s.label}</a>
+                  </React.Fragment>
+                ))}
+              </p>
+            </section>
+
+            <section className="mt-20">
+              <h2 className="mono text-[11px] uppercase tracking-[0.18em] text-muted dark:text-d-muted mb-2">
+                Latest
+              </h2>
+              <div className="border-t border-rule dark:border-d-rule">
+                <LogEntry entry={latest} compact />
+              </div>
+              <ArrowLink onClick={() => navigate({ view: "log" })} className="mt-2">
+                More from the log
+              </ArrowLink>
+            </section>
+
+            <section className="mt-20">
+              <h2 className="mono text-[11px] uppercase tracking-[0.18em] text-muted dark:text-d-muted mb-4">
+                Building
+              </h2>
+              <div className="flex items-baseline justify-between gap-6 flex-wrap">
+                <h3 className="serif text-[24px] font-medium tracking-tight">{syscribe.title}</h3>
+                <div className="mono text-[11px] uppercase tracking-[0.14em] text-muted dark:text-d-muted">
+                  {syscribe.status} · {syscribe.category} · {syscribe.weekMarker}
+                </div>
+              </div>
+              <p className="text-[16px] mt-3 leading-[1.7] text-ink dark:text-d-ink max-w-[58ch]">
+                {syscribe.summary} A small team of one, shipping in public against a twelve-week clock.
+              </p>
+              <ArrowLink onClick={() => navigate({ view: "project", id: syscribe.id })} className="mt-3">
+                Syscribe
+              </ArrowLink>
+            </section>
+
+            <section className="mt-20">
+              <h2 className="mono text-[11px] uppercase tracking-[0.18em] text-muted dark:text-d-muted mb-4">
+                Recently read
+              </h2>
+              <ul className="divide-y divide-rule dark:divide-d-rule border-t border-b border-rule dark:border-d-rule">
+                {recentBooks.map((b) => (
+                  <li key={b.id} className="py-4">
+                    <div className="flex items-baseline justify-between gap-6 flex-wrap">
+                      <div>
+                        <span className="serif text-[18px] font-medium">{b.title}</span>
+                        <span className="text-[14px] text-muted dark:text-d-muted ml-2">{b.author}</span>
+                      </div>
+                      <span className="mono text-[12px] text-accent dark:text-d-accent">{b.rating}</span>
+                    </div>
+                    <p className="text-[15px] mt-1.5 text-ink/85 dark:text-d-ink/85 max-w-[58ch]">{b.body[0]}</p>
+                  </li>
+                ))}
+              </ul>
+              <ArrowLink onClick={() => navigate({ view: "books" })} className="mt-4">
+                All books
+              </ArrowLink>
+            </section>
+          </React.Fragment>
+        );
+      }
+
+      function LogView() {
+        const [filter, setFilter] = useState("all");
+        const filtered = useMemo(() => {
+          if (filter === "all") return LOG;
+          return LOG.filter((e) => e.type === filter);
+        }, [filter]);
+        return (
+          <React.Fragment>
+            <section className="pt-4 pb-8">
+              <h1 className="serif text-[36px] font-medium tracking-tight">Log</h1>
+              <p className="mt-3 text-[16px] leading-[1.7] text-muted dark:text-d-muted max-w-[58ch]">
+                Everything I write, build, read, and ship. Reverse chronological, no categories that aren't earned.
+              </p>
+            </section>
+            <div className="pb-2 border-b border-rule dark:border-d-rule">
+              <FilterRow
+                value={filter}
+                onChange={setFilter}
+                options={[
+                  { value: "all", label: "All" },
+                  { value: "build", label: "Building" },
+                  { value: "book", label: "Books" },
+                  { value: "note", label: "Notes" },
+                  { value: "ship", label: "Ships" },
+                ]}
+              />
+            </div>
+            <div className="divide-y divide-rule dark:divide-d-rule">
+              {filtered.map((entry) => (
+                <LogEntry key={entry.id} entry={entry} />
+              ))}
+              {filtered.length === 0 && (
+                <p className="py-12 text-[15px] text-muted dark:text-d-muted">
+                  Nothing here yet under this filter.
+                </p>
+              )}
+            </div>
+          </React.Fragment>
+        );
+      }
+
+      function ProjectsView({ navigate }) {
+        const [filter, setFilter] = useState("all");
+        const sorted = useMemo(() => {
+          const list =
+            filter === "all"
+              ? PROJECTS
+              : PROJECTS.filter((p) => p.category.toLowerCase() === filter);
+          return [...list].sort(
+            (a, b) => STATUS_ORDER.indexOf(a.status) - STATUS_ORDER.indexOf(b.status)
+          );
+        }, [filter]);
+        return (
+          <React.Fragment>
+            <section className="pt-4 pb-8">
+              <h1 className="serif text-[36px] font-medium tracking-tight">Projects</h1>
+              <p className="mt-3 text-[16px] leading-[1.7] text-muted dark:text-d-muted max-w-[58ch]">
+                Software and athletics, treated as peers. Each one has a deadline, an outcome that can be measured, and a plan that can be wrong.
+              </p>
+            </section>
+            <div className="pb-2 border-b border-rule dark:border-d-rule">
+              <FilterRow
+                value={filter}
+                onChange={setFilter}
+                options={[
+                  { value: "all", label: "All" },
+                  { value: "software", label: "Software" },
+                  { value: "athletics", label: "Athletics" },
+                ]}
+              />
+            </div>
+            <div>
+              {sorted.map((p) => (
+                <ProjectRow key={p.id} project={p} onOpen={(id) => navigate({ view: "project", id })} />
+              ))}
+            </div>
+          </React.Fragment>
+        );
+      }
+
+      function ProjectView({ id, navigate }) {
+        const project = PROJECTS.find((p) => p.id === id) || PROJECTS[0];
+        return (
+          <React.Fragment>
+            <button
+              onClick={() => navigate({ view: "projects" })}
+              className="arrow-link mono text-[12px] uppercase tracking-[0.14em] text-muted dark:text-d-muted hover:text-ink dark:hover:text-d-ink pt-2 mb-10"
+            >
+              <span className="arrow inline-block rotate-180">→</span>
+              <span className="ml-1">Projects</span>
+            </button>
+            <header>
+              <h1 className="serif text-[36px] font-medium tracking-tight leading-[1.1]">{project.title}</h1>
+              <p className="mt-3 mono text-[12px] uppercase tracking-[0.14em] text-muted dark:text-d-muted">
+                {project.status} · {project.category}
+                {project.weekMarker && <span> · {project.weekMarker}</span>}
+              </p>
+              <p className="mt-4 text-[17px] leading-[1.7] text-ink dark:text-d-ink max-w-[58ch]">
+                {project.summary}
+              </p>
+            </header>
+            {project.currentFocus && project.currentFocus.length > 0 && (
+              <aside className="mt-10 pl-5 border-l-2 border-accent dark:border-d-accent">
+                <h2 className="mono text-[11px] uppercase tracking-[0.18em] text-accent dark:text-d-accent mb-2">
+                  {project.category === "Athletics" ? "Training block" : "Current focus"}
+                </h2>
+                <ul className="space-y-2 text-[15px] leading-[1.65] text-ink dark:text-d-ink max-w-[58ch]">
+                  {project.currentFocus.map((line, i) => (
+                    <li key={i}>{line}</li>
+                  ))}
+                </ul>
+              </aside>
+            )}
+            <section className="prose-body mt-12 text-[17px] text-ink dark:text-d-ink max-w-[58ch]">
+              {project.body.map((node, i) =>
+                node.kind === "h3" ? <h3 key={i}>{node.text}</h3> : <p key={i}>{node.text}</p>
+              )}
+            </section>
+            {project.links && project.links.length > 0 && (
+              <div className="mt-14 pt-6 border-t border-rule dark:border-d-rule">
+                <h3 className="mono text-[11px] uppercase tracking-[0.18em] text-muted dark:text-d-muted mb-3">
+                  Links
+                </h3>
+                <ul className="flex flex-wrap gap-x-5 gap-y-2 text-[14px]">
+                  {project.links.map((l) => (
+                    <li key={l.label}>
+                      <a href={l.href} className="arrow-link inline-flex items-center gap-1.5 text-accent dark:text-d-accent hover:text-accent-hover dark:hover:text-d-accent-hover">
+                        <span className="arrow">→</span>
+                        {l.label}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </React.Fragment>
+        );
+      }
+
+      function BooksView() {
+        return (
+          <React.Fragment>
+            <section className="pt-4 pb-8">
+              <h1 className="serif text-[36px] font-medium tracking-tight">Books</h1>
+              <p className="mt-3 text-[16px] leading-[1.7] text-muted dark:text-d-muted max-w-[58ch]">
+                What I've been reading, with the running counter. The rating is a single signal: would I re-read it, would I skim it, would I pass.
+              </p>
+              <p className="mt-4 mono text-[12px] text-accent dark:text-d-accent">
+                {BOOKS.length} read this year · 14 total in 2026
+              </p>
+            </section>
+            <div className="divide-y divide-rule dark:divide-d-rule border-t border-rule dark:border-d-rule">
+              {BOOKS.map((b) => (
+                <LogEntry key={b.id} entry={b} />
+              ))}
+            </div>
+          </React.Fragment>
+        );
+      }
+
+      function PrinciplesView() {
+        const items = [
+          { h: "The empty column is the most important column.", p: "Every roadmap I've shipped that held up left a deliberate space for what the market would do. Filling it in advance is the most common mistake I see." },
+          { h: "Strategy is a verb.", p: "Slide decks are not strategy. Strategy is the set of decisions you've made about what not to do, and the experiments you've run to find out." },
+          { h: "Customer interviews compound.", p: "Thirty conversations in is when the pattern starts being signal. Three is noise. The teams that skip the first twenty-seven build the wrong thing." },
+          { h: "Pruning beats adding.", p: "Most product problems are excess. Most user complaints are about complexity, not missing features. The fastest improvement is usually a deletion." },
+          { h: "Athletic discipline transfers.", p: "The thing I've learned from training that I use every day at work: the plan is the point. Adjust it, but never abandon it on a hard morning." },
+          { h: "Write it down or it didn't happen.", p: "If a decision can't be recovered six months later from your own notes, the team will relitigate it. Cheap to write, expensive to skip." },
+        ];
+        return (
+          <React.Fragment>
+            <section className="pt-4 pb-10">
+              <h1 className="serif text-[36px] font-medium tracking-tight">Principles</h1>
+              <p className="mt-3 text-[16px] leading-[1.7] text-muted dark:text-d-muted max-w-[58ch]">
+                Things I believe about product, building, and showing up — held loosely enough to be wrong.
+              </p>
+            </section>
+            <ol className="space-y-10">
+              {items.map((it, i) => (
+                <li key={i} className="grid grid-cols-[40px_1fr] gap-6">
+                  <span className="mono text-[12px] pt-1.5 text-muted dark:text-d-muted">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <div>
+                    <h3 className="serif text-[20px] font-medium leading-snug tracking-tight">{it.h}</h3>
+                    <p className="mt-2 text-[16px] leading-[1.7] text-ink/90 dark:text-d-ink/90 max-w-[58ch]">{it.p}</p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </React.Fragment>
+        );
+      }
+
+      function AboutView() {
+        return (
+          <React.Fragment>
+            <section className="pt-4 pb-8">
+              <h1 className="serif text-[36px] font-medium tracking-tight">About</h1>
+            </section>
+            <div className="prose-body text-[17px] text-ink dark:text-d-ink max-w-[58ch]">
+              <p>I'm Alex. I lead product at BettrData, a data operations platform, and I'm solo-building Syscribe — an AI-powered documentation tool for teams that ship faster than they can write.</p>
+              <p>I've been in product for twelve years across three companies, two countries, and one full career pivot. Auckland, NZ is home base since 2022. Before that, San Francisco for a decade.</p>
+              <p>Outside of work I race on the track, train BJJ at a small gym in Mt Eden, and read more than I'll ever finish. This site is the public side of that — a log of what I'm building, what I'm learning, and what I'm wrong about.</p>
+              <p>If you're an investor looking at Syscribe, or a founder thinking about senior product leadership, I'd love to talk. Email is the fastest way to reach me.</p>
+            </div>
+          </React.Fragment>
+        );
+      }
+
+      // ─────────────────────────────────────────────────────────────────────────
+      // App: router + theme
+      // ─────────────────────────────────────────────────────────────────────────
+
+      function App() {
+        useAccentVar();
+
+        const [theme, setTheme] = useState(() => {
+          try { return localStorage.getItem("alex.theme") || "light"; } catch { return "light"; }
+        });
+        useEffect(() => {
+          const root = document.documentElement;
+          if (theme === "dark") root.classList.add("dark");
+          else root.classList.remove("dark");
+          try { localStorage.setItem("alex.theme", theme); } catch {}
+        }, [theme]);
+
+        const portrait = { show: true, style: "etch", shape: "rounded", theme };
+
+        const [route, setRoute] = useState(() => {
+          try {
+            const saved = sessionStorage.getItem("alex.route");
+            if (saved) return JSON.parse(saved);
+          } catch {}
+          return { view: "home" };
+        });
+        const navigate = useCallback((next) => {
+          setRoute(next);
+          try { sessionStorage.setItem("alex.route", JSON.stringify(next)); } catch {}
+          window.scrollTo({ top: 0, behavior: "instant" in window ? "instant" : "auto" });
+        }, []);
+
+        useEffect(() => {
+          let pending = false;
+          const handler = (e) => {
+            if (e.target && (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA")) return;
+            if (e.key === "g" && !pending) {
+              pending = true;
+              setTimeout(() => (pending = false), 800);
+              return;
+            }
+            if (pending) {
+              const map = { h: "home", l: "log", b: "books", p: "projects", r: "principles", a: "about" };
+              if (map[e.key]) {
+                navigate({ view: map[e.key] });
+                pending = false;
+              }
+            }
+          };
+          window.addEventListener("keydown", handler);
+          return () => window.removeEventListener("keydown", handler);
+        }, [navigate]);
+
+        let body;
+        switch (route.view) {
+          case "log": body = <LogView />; break;
+          case "projects": body = <ProjectsView navigate={navigate} />; break;
+          case "project": body = <ProjectView id={route.id} navigate={navigate} />; break;
+          case "books": body = <BooksView />; break;
+          case "principles": body = <PrinciplesView />; break;
+          case "about": body = <AboutView />; break;
+          case "home":
+          default: body = <HomeView navigate={navigate} portrait={portrait} />;
+        }
+
+        return (
+          <div className="min-h-screen">
+            <div className="max-w-[720px] mx-auto px-6 sm:px-8">
+              <Header route={route} navigate={navigate} theme={theme} setTheme={setTheme} />
+            </div>
+            <main>
+              <PageShell route={route}>{body}</PageShell>
+            </main>
+            <div className="max-w-[720px] mx-auto px-6 sm:px-8">
+              <Footer />
+            </div>
+          </div>
+        );
+      }
+
+      ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+    </script>
+  </body>
+</html>

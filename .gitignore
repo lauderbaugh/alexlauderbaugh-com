@@ -1,0 +1,14 @@
+node_modules
+.next
+out
+.env*
+!.env.example
+.DS_Store
+*.log
+
+# Content drafts — never publish
+/content/_drafts/
+
+# IDE
+.vscode/
+.idea/
