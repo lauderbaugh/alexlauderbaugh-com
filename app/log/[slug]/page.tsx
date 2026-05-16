@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { LogEntryView } from "@/components/log-entry";
@@ -6,6 +7,25 @@ import { getAllLogEntries, getLogEntry } from "@/lib/content";
 
 export function generateStaticParams() {
   return getAllLogEntries().map((e) => ({ slug: e.slug }));
+}
+
+function firstParagraph(body: string): string {
+  return (body.split(/\n\s*\n/).map((p) => p.trim()).find(Boolean) ?? "").slice(0, 200);
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const entry = getLogEntry(slug);
+  if (!entry) return { title: "Not found" };
+  const description = firstParagraph(entry.body);
+  return {
+    title: entry.title,
+    description,
+  };
 }
 
 export default async function LogEntryPage({

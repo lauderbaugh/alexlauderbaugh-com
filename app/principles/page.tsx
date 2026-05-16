@@ -1,6 +1,13 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { PageShell } from "@/components/page-shell";
 import { getPrinciples } from "@/lib/content";
+
+export const metadata: Metadata = {
+  title: "Principles",
+  description:
+    "Things I believe about product, building, and showing up — held loosely enough to be wrong.",
+};
 
 export default function PrinciplesPage() {
   const principles = getPrinciples();

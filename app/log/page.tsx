@@ -1,8 +1,15 @@
+import type { Metadata } from "next";
 import { FilterRow } from "@/components/filter-row";
 import { LogEntryView } from "@/components/log-entry";
 import { PageShell } from "@/components/page-shell";
 import { getAllLogEntries } from "@/lib/content";
 import { LOG_TYPES, type LogType } from "@/lib/types";
+
+export const metadata: Metadata = {
+  title: "Log",
+  description:
+    "Everything I write, build, read, and ship. Reverse chronological, no categories that aren't earned.",
+};
 
 const FILTER_OPTIONS = [
   { value: "all", label: "All" },

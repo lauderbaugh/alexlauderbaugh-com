@@ -1,6 +1,13 @@
+import type { Metadata } from "next";
 import { LogEntryView } from "@/components/log-entry";
 import { PageShell } from "@/components/page-shell";
 import { getBooks } from "@/lib/content";
+
+export const metadata: Metadata = {
+  title: "Books",
+  description:
+    "What I've been reading, with the running counter. The rating is a single signal: would I re-read it, would I skim it, would I pass.",
+};
 
 export default function BooksPage() {
   const books = getBooks();

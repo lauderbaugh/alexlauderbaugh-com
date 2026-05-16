@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { MDXRemote } from "next-mdx-remote/rsc";
@@ -6,6 +7,20 @@ import { getAllProjects, getProject } from "@/lib/content";
 
 export function generateStaticParams() {
   return getAllProjects().map((p) => ({ slug: p.slug }));
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const project = getProject(slug);
+  if (!project) return { title: "Not found" };
+  return {
+    title: project.title,
+    description: project.summary,
+  };
 }
 
 const mdxComponents = {

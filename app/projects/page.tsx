@@ -1,8 +1,15 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { FilterRow } from "@/components/filter-row";
 import { PageShell } from "@/components/page-shell";
 import { getAllProjects } from "@/lib/content";
 import { CATEGORIES, type ProjectCategory } from "@/lib/types";
+
+export const metadata: Metadata = {
+  title: "Projects",
+  description:
+    "Software and athletics, treated as peers. Each one has a deadline, an outcome that can be measured, and a plan that can be wrong.",
+};
 
 const FILTER_OPTIONS = [
   { value: "all", label: "All" },

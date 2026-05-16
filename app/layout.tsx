@@ -1,12 +1,28 @@
 import type { Metadata } from "next";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Header } from "@/components/header";
+import { SITE } from "@/lib/site";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Alex Lauderbaugh",
-  description:
-    "Product leader and builder. CPO at BettrData, building Syscribe. Based in Auckland.",
+  metadataBase: new URL(SITE.url),
+  title: {
+    default: SITE.name,
+    template: `%s · ${SITE.name}`,
+  },
+  description: SITE.intro,
+  alternates: {
+    types: { "application/rss+xml": [{ url: "/feed.xml", title: SITE.name }] },
+  },
+  openGraph: {
+    type: "website",
+    url: SITE.url,
+    siteName: SITE.name,
+    locale: "en_NZ",
+  },
+  twitter: {
+    card: "summary_large_image",
+  },
 };
 
 export default function RootLayout({

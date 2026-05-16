@@ -1,7 +1,14 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import { PageShell } from "@/components/page-shell";
 import { getAboutPage } from "@/lib/content";
+
+export const metadata: Metadata = {
+  title: "About",
+  description:
+    "Alex Lauderbaugh — product leader and builder based in Auckland.",
+};
 
 const mdxComponents = {
   h3: (props: React.HTMLAttributes<HTMLHeadingElement>) => <h3 {...props} />,
