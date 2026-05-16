@@ -1,5 +1,6 @@
 import { formatDate } from "@/lib/github";
 import type { LogEntry } from "@/lib/types";
+import { Belt } from "./belt";
 import { TypeBadge } from "./type-badge";
 
 interface LogEntryProps {
@@ -28,6 +29,7 @@ export function LogEntryView({ entry, compact = false }: LogEntryProps) {
       <div>
         <div className="flex items-center gap-3 mb-2">
           <TypeBadge type={entry.type} />
+          {entry.showBelt && <Belt />}
           {entry.project && (
             <span className="mono text-[11px] uppercase tracking-[0.14em] text-muted dark:text-d-muted">
               · {entry.project}

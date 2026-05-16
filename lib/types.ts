@@ -42,7 +42,6 @@ export const projectFrontmatterSchema = z.object({
   links: z
     .array(z.object({ label: z.string(), href: z.string() }))
     .default([]),
-  showBelt: z.boolean().default(false),
   draft: z.boolean().default(false),
 });
 

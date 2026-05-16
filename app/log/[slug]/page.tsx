@@ -18,7 +18,7 @@ export default async function LogEntryPage({
   if (!entry) notFound();
 
   return (
-    <PageShell sourcePath={entry.sourcePath} showBelt={entry.showBelt}>
+    <PageShell sourcePath={entry.sourcePath}>
       <Link
         href="/log"
         className="arrow-link mono text-[12px] uppercase tracking-[0.14em] text-muted dark:text-d-muted hover:text-ink dark:hover:text-d-ink pt-2 mb-6 inline-flex items-center"
