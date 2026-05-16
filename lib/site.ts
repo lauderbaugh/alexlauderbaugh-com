@@ -23,8 +23,8 @@ export const SITE = {
 
 export const NAV = [
   { id: "log", href: "/log", label: "Log" },
-  { id: "books", href: "/books", label: "Books" },
   { id: "projects", href: "/projects", label: "Projects" },
+  { id: "books", href: "/books", label: "Books" },
   { id: "principles", href: "/principles", label: "Principles" },
   { id: "about", href: "/about", label: "About" },
 ] as const;
