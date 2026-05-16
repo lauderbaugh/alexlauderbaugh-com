@@ -28,7 +28,6 @@ export const logFrontmatterSchema = z.object({
   project: z.string().optional(),
   author: z.string().optional(),
   rating: z.enum(RATINGS).optional(),
-  showBelt: z.boolean().default(false),
   draft: z.boolean().default(false),
 });
 

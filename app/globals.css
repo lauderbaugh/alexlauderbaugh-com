@@ -104,6 +104,3 @@ body {
   display: inline-block;
   flex: none;
 }
-
-.belt-outline { stroke: transparent; }
-.dark .belt-outline { stroke: #2A2A2E; }
