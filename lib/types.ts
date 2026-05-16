@@ -44,8 +44,22 @@ export const projectFrontmatterSchema = z.object({
   draft: z.boolean().default(false),
 });
 
+export const principlesFrontmatterSchema = z.object({
+  title: z.string().default("Principles"),
+  intro: z.string().optional(),
+  items: z
+    .array(z.object({ heading: z.string(), body: z.string() }))
+    .min(1),
+});
+
+export const pageFrontmatterSchema = z.object({
+  title: z.string(),
+});
+
 export type LogFrontmatter = z.infer<typeof logFrontmatterSchema>;
 export type ProjectFrontmatter = z.infer<typeof projectFrontmatterSchema>;
+export type PrinciplesFrontmatter = z.infer<typeof principlesFrontmatterSchema>;
+export type PageFrontmatter = z.infer<typeof pageFrontmatterSchema>;
 
 export interface LogEntry extends LogFrontmatter {
   slug: string;

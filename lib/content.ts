@@ -4,9 +4,13 @@ import path from "node:path";
 import matter from "gray-matter";
 import {
   logFrontmatterSchema,
+  pageFrontmatterSchema,
+  principlesFrontmatterSchema,
   projectFrontmatterSchema,
   STATUS_ORDER,
   type LogEntry,
+  type PageFrontmatter,
+  type PrinciplesFrontmatter,
   type Project,
 } from "./types";
 
@@ -68,11 +72,39 @@ export function getProject(slug: string): Project | null {
   return getAllProjects().find((p) => p.slug === slug) ?? null;
 }
 
-export function readPageMdx(name: string): { raw: string; sourcePath: string } | null {
+function readPageRaw(name: string): { raw: string; sourcePath: string } | null {
   const filePath = path.join(PAGES_DIR, `${name}.mdx`);
   if (!fs.existsSync(filePath)) return null;
   return {
     raw: fs.readFileSync(filePath, "utf8"),
     sourcePath: path.relative(process.cwd(), filePath),
+  };
+}
+
+export function getPrinciples(): {
+  frontmatter: PrinciplesFrontmatter;
+  sourcePath: string;
+} | null {
+  const file = readPageRaw("principles");
+  if (!file) return null;
+  const { data } = matter(file.raw);
+  return {
+    frontmatter: principlesFrontmatterSchema.parse(data),
+    sourcePath: file.sourcePath,
+  };
+}
+
+export function getAboutPage(): {
+  frontmatter: PageFrontmatter;
+  body: string;
+  sourcePath: string;
+} | null {
+  const file = readPageRaw("about");
+  if (!file) return null;
+  const { data, content } = matter(file.raw);
+  return {
+    frontmatter: pageFrontmatterSchema.parse(data),
+    body: content,
+    sourcePath: file.sourcePath,
   };
 }
