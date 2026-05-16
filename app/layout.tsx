@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Header } from "@/components/header";
-import { Footer } from "@/components/footer";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -40,9 +39,6 @@ export default function RootLayout({
             <Header />
           </div>
           <main>{children}</main>
-          <div className="max-w-[720px] mx-auto px-6 sm:px-8">
-            <Footer />
-          </div>
         </ThemeProvider>
       </body>
     </html>

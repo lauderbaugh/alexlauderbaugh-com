@@ -1,7 +1,13 @@
 import { Fragment } from "react";
 import { SITE } from "@/lib/site";
+import { Belt } from "./belt";
 
-export function Footer({ sourcePath }: { sourcePath?: string }) {
+interface FooterProps {
+  sourcePath?: string;
+  showBelt?: boolean;
+}
+
+export function Footer({ sourcePath, showBelt }: FooterProps) {
   const repo = SITE.repo;
   const editUrl = sourcePath
     ? `https://github.com/${repo.owner}/${repo.name}/blob/${repo.branch}/${sourcePath}`
@@ -10,6 +16,7 @@ export function Footer({ sourcePath }: { sourcePath?: string }) {
   return (
     <footer className="mt-24 pt-8 pb-14 border-t border-rule dark:border-d-rule">
       <p className="mono text-[12px] text-muted dark:text-d-muted">
+        {showBelt && <Belt className="mr-2" />}
         {SITE.location} · Last updated {SITE.lastUpdated}
       </p>
       <p className="text-[13px] mt-2 text-muted dark:text-d-muted">

@@ -1,6 +1,14 @@
+export type BjjBelt = "white" | "blue" | "purple" | "brown" | "black";
+
+export interface BjjConfig {
+  belt: BjjBelt;
+  stripes: number;
+}
+
 export const SITE = {
   name: "Alex Lauderbaugh",
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://alexlauderbaugh.com",
+  bjj: { belt: "brown", stripes: 0 } as BjjConfig | undefined,
   location: "Auckland, New Zealand",
   whereLine:
     "Auckland · Building Syscribe · CPO at BettrData · Open to investor conversations.",
