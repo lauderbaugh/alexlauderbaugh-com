@@ -9,7 +9,7 @@ export const SITE = {
   social: [
     { label: "LinkedIn", href: "#" },
     { label: "GitHub", href: "https://github.com/lauderbaugh" },
-    { label: "Twitter", href: "#" },
+    { label: "Goodreads", href: "#" },
     { label: "Email", href: "mailto:hi@alexlauderbaugh.com" },
     { label: "RSS", href: "/feed.xml" },
   ],
