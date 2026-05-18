@@ -193,6 +193,18 @@ Store as ISO `YYYY-MM-DD` in frontmatter. Display as `May 12, 2026` (use `date-f
 
 Filename = slug. `content/log/syscribe-w5.mdx` → `/log/syscribe-w5`. Keep slugs short, hyphenated, lowercase.
 
+### Internal links in MDX
+
+Author all internal links as absolute URLs using the canonical apex domain:
+
+- ✅ `https://alexlauderbaugh.com/projects/syscribe`
+- ❌ `/projects/syscribe`
+- ❌ `https://www.alexlauderbaugh.com/projects/syscribe`
+
+The MDX renderer (`components/mdx-components.tsx`) normalizes same-host absolute URLs to Next.js `<Link>` components for client-side navigation, so the user-facing behavior matches relative URLs. Authoring as absolute ensures links work in RSS feeds, syndicated content, and GitHub's MDX preview where there's no Next.js router to resolve a leading `/`.
+
+External absolute URLs render as `<a target="_blank" rel="noopener noreferrer">`. `mailto:` and `#anchor` links render as plain anchors.
+
 ### Components
 
 Component file naming: `kebab-case.tsx`. Import names PascalCase. Co-locate small components with the route that uses them; lift to `/components/` only when used in 2+ places.

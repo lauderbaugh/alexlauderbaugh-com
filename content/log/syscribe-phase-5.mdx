@@ -9,6 +9,7 @@ draft: false
 Currently working through the actual deployment of the product to live production and staging environments instead of just local development. There have been a lot of decisions about when to build versus when to use services. For the most part, I've decided to use existing SaaS/PaaS services since the free tiers are often sufficient for the current state, and every layer except the product itself is already a commodity. One might think this would be the easiest part (how hard could it be to set up a Railway or Neon?), but it's proven to be pretty brutal for two reasons:
 
 1. There is a lot of infrastructure required to get Syscribe to actually work as a product; I think I'm at 10 distinct services for infrastructure between web hosting, worker management, data persistence, etc.
+
 2. Getting all of that infrastructure to work together is an education in credential management and surgical code changes.
 
 All this has me thinking that there's another business opportunity here: something less all-inclusive than Replit or Bolt, but more comprehensive than the one-business-per-service experience that I'm using. This may be worth exploring after Syscribe.

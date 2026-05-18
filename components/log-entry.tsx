@@ -1,5 +1,7 @@
+import { MDXRemote } from "next-mdx-remote/rsc";
 import { formatDate } from "@/lib/github";
 import type { LogEntry } from "@/lib/types";
+import { mdxComponents } from "./mdx-components";
 import { TypeBadge } from "./type-badge";
 
 interface LogEntryProps {
@@ -7,16 +9,10 @@ interface LogEntryProps {
   compact?: boolean;
 }
 
-function paragraphs(body: string): string[] {
-  return body
-    .split(/\n\s*\n/)
-    .map((p) => p.trim())
-    .filter(Boolean);
-}
-
 export function LogEntryView({ entry, compact = false }: LogEntryProps) {
-  const paras = paragraphs(entry.body);
-  const visible = compact ? paras.slice(0, 1) : paras;
+  const visibleBody = compact
+    ? (entry.body.split(/\n\s*\n/)[0] ?? "").trim()
+    : entry.body;
 
   return (
     <article className="grid grid-cols-1 sm:grid-cols-[110px_1fr] gap-x-8 gap-y-2 py-7">
@@ -29,7 +25,7 @@ export function LogEntryView({ entry, compact = false }: LogEntryProps) {
         <div className="flex items-center gap-3 mb-2">
           <TypeBadge type={entry.type} />
           {entry.project && (
-            <span className="mono text-[11px] uppercase tracking-[0.14em] text-muted dark:text-d-muted">
+            <span className="mono text-[11px] tracking-[0.14em] text-muted dark:text-d-muted">
               · {entry.project}
             </span>
           )}
@@ -48,9 +44,7 @@ export function LogEntryView({ entry, compact = false }: LogEntryProps) {
           </p>
         )}
         <div className="prose-body mt-3 text-[16px] text-ink dark:text-d-ink max-w-[58ch]">
-          {visible.map((p, i) => (
-            <p key={i}>{p}</p>
-          ))}
+          <MDXRemote source={visibleBody} components={mdxComponents} />
         </div>
       </div>
     </article>

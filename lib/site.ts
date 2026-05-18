@@ -7,9 +7,9 @@ export const SITE = {
   intro:
     "Product leader and builder. Currently CPO at BettrData and building Syscribe, an AI-powered documentation platform. Based in Auckland — mostly writing about product, systems, and what I'm reading.",
   social: [
-    { label: "LinkedIn", href: "#" },
+    { label: "LinkedIn", href: "https://www.linkedin.com/in/alauderbaugh/" },
     { label: "GitHub", href: "https://github.com/lauderbaugh" },
-    { label: "Goodreads", href: "#" },
+    { label: "Goodreads", href: "https://www.goodreads.com/user/show/69418981-alex-lauderbaugh" },
     { label: "Email", href: "mailto:hi@alexlauderbaugh.com" },
     { label: "RSS", href: "/feed.xml" },
   ],

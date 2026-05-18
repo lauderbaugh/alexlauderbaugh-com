@@ -1,6 +1,8 @@
+import { MDXRemote } from "next-mdx-remote/rsc";
 import { Fragment } from "react";
 import { ArrowLink } from "@/components/arrow-link";
-import { LogEntryView } from "@/components/log-entry";
+import { LogEntryCard } from "@/components/log-entry-card";
+import { mdxComponents } from "@/components/mdx-components";
 import { PageShell } from "@/components/page-shell";
 import { Portrait } from "@/components/portrait";
 import { getAllLogEntries, getAllProjects, getBooks } from "@/lib/content";
@@ -47,13 +49,11 @@ export default function HomePage() {
 
       {latest && (
         <section className="mt-20">
-          <h2 className="mono text-[11px] uppercase tracking-[0.18em] text-muted dark:text-d-muted mb-2">
+          <h2 className="mono text-[11px] uppercase tracking-[0.18em] text-muted dark:text-d-muted mb-4">
             Latest
           </h2>
-          <div className="border-t border-rule dark:border-d-rule">
-            <LogEntryView entry={latest} compact />
-          </div>
-          <ArrowLink href="/log" className="mt-2">
+          <LogEntryCard entry={latest} />
+          <ArrowLink href="/log" className="mt-3">
             More from the log
           </ArrowLink>
         </section>
@@ -105,9 +105,12 @@ export default function HomePage() {
                     </span>
                   )}
                 </div>
-                <p className="text-[15px] mt-1.5 text-ink/85 dark:text-d-ink/85 max-w-[58ch]">
-                  {b.body.split(/\n\s*\n/)[0]?.trim()}
-                </p>
+                <div className="prose-body text-[15px] mt-1.5 text-ink/85 dark:text-d-ink/85 max-w-[58ch]">
+                  <MDXRemote
+                    source={(b.body.split(/\n\s*\n/)[0] ?? "").trim()}
+                    components={mdxComponents}
+                  />
+                </div>
               </li>
             ))}
           </ul>
