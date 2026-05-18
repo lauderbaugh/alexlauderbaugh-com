@@ -1,27 +1,21 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
+import { mdxComponents } from "@/components/mdx-components";
 import { PageShell } from "@/components/page-shell";
-import { getAboutPage } from "@/lib/content";
+import { getStaticPage } from "@/lib/content";
 
-export const metadata: Metadata = {
-  title: "About",
-  description:
-    "Alex Lauderbaugh — product leader and builder based in Auckland.",
-};
+const about = getStaticPage("about");
 
-const mdxComponents = {
-  h3: (props: React.HTMLAttributes<HTMLHeadingElement>) => <h3 {...props} />,
-  p: (props: React.HTMLAttributes<HTMLParagraphElement>) => <p {...props} />,
-  a: ({ href = "#", ...props }: React.AnchorHTMLAttributes<HTMLAnchorElement>) => (
-    <a href={href} {...props} />
-  ),
-};
+export const metadata: Metadata = about
+  ? {
+      title: about.frontmatter.title,
+      description: about.frontmatter.description,
+    }
+  : { title: "About" };
 
 export default function AboutPage() {
-  const about = getAboutPage();
   if (!about) notFound();
-
   return (
     <PageShell sourcePath={about.sourcePath}>
       <section className="pt-4 pb-8">

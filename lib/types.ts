@@ -2,7 +2,7 @@ import { z } from "zod";
 
 export const LOG_TYPES = ["build", "book", "note", "ship"] as const;
 export const RATINGS = ["Required", "Recommended", "Good", "Skippable", "Unfinished"] as const;
-export const STATUSES = ["Building", "Active", "Shipped", "Archived"] as const;
+export const STATUSES = ["Building", "Active", "Paused", "Shipped", "Archived"] as const;
 export const CATEGORIES = ["Software", "Athletics"] as const;
 
 export type LogType = (typeof LOG_TYPES)[number];
@@ -44,21 +44,13 @@ export const projectFrontmatterSchema = z.object({
   draft: z.boolean().default(false),
 });
 
-export const principlesFrontmatterSchema = z.object({
-  title: z.string().default("Principles"),
-  intro: z.string().optional(),
-  items: z
-    .array(z.object({ heading: z.string(), body: z.string() }))
-    .min(1),
-});
-
 export const pageFrontmatterSchema = z.object({
   title: z.string(),
+  description: z.string().optional(),
 });
 
 export type LogFrontmatter = z.infer<typeof logFrontmatterSchema>;
 export type ProjectFrontmatter = z.infer<typeof projectFrontmatterSchema>;
-export type PrinciplesFrontmatter = z.infer<typeof principlesFrontmatterSchema>;
 export type PageFrontmatter = z.infer<typeof pageFrontmatterSchema>;
 
 export interface LogEntry extends LogFrontmatter {

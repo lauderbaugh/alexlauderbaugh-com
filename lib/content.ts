@@ -5,12 +5,10 @@ import matter from "gray-matter";
 import {
   logFrontmatterSchema,
   pageFrontmatterSchema,
-  principlesFrontmatterSchema,
   projectFrontmatterSchema,
   STATUS_ORDER,
   type LogEntry,
   type PageFrontmatter,
-  type PrinciplesFrontmatter,
   type Project,
 } from "./types";
 
@@ -81,25 +79,12 @@ function readPageRaw(name: string): { raw: string; sourcePath: string } | null {
   };
 }
 
-export function getPrinciples(): {
-  frontmatter: PrinciplesFrontmatter;
-  sourcePath: string;
-} | null {
-  const file = readPageRaw("principles");
-  if (!file) return null;
-  const { data } = matter(file.raw);
-  return {
-    frontmatter: principlesFrontmatterSchema.parse(data),
-    sourcePath: file.sourcePath,
-  };
-}
-
-export function getAboutPage(): {
+export function getStaticPage(name: string): {
   frontmatter: PageFrontmatter;
   body: string;
   sourcePath: string;
 } | null {
-  const file = readPageRaw("about");
+  const file = readPageRaw(name);
   if (!file) return null;
   const { data, content } = matter(file.raw);
   return {

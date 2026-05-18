@@ -1,0 +1,33 @@
+---
+title: "alexlauderbaugh.com"
+status: "Active"
+category: "Software"
+summary: "This site, rebuilt from a wireframe through a staged Claude Code workflow."
+links:
+  - label: "Source on GitHub"
+    href: "https://github.com/lauderbaugh/alexlauderbaugh.com"
+---
+
+# alexlauderbaugh.com
+
+This site, the one you're reading. Personal portfolio rebuilt from the ground up to replace a stale older version. The interesting part isn't the result — it's the process I used to build it.
+
+## What it is
+
+A Next.js + MDX site with a custom design system, content-as-files architecture, light/dark mode, RSS feed, and a small set of opinionated structural moves: a unified log feed across builds, books, notes, and ships; a projects index that treats software and athletic projects as peers; an "edit this page on GitHub" link on every content-backed page; a where-line in the header that updates as my situation does. The full source is in the repo linked above.
+
+The stack is Next.js 15 App Router, MDX via `@next/mdx`, Tailwind v4, `next-themes` for the mode toggle, deployed on Vercel. The content lives in `/content/` as MDX files — every log entry, every project, every static page. Adding a new entry is creating a file and committing it. No CMS, no database.
+
+## Why I built it
+
+The old version had become embarrassing — out of date, mismatched to who I am now, and structurally too rigid to update easily. I wanted something I'd actually maintain. That meant two things: the architecture had to make adding content nearly frictionless, and the design had to be quiet enough that adding content wouldn't require also being a designer.
+
+## How I built it
+
+The process was the interesting part. I started by working through the design language in a long-form conversation with Claude as a design partner: references, voice, content model, typographic decisions, color palette, the small structural moves that make a personal site distinctive rather than generic. That conversation produced a tight design brief that I took into Claude's design tool to generate a working wireframe — a single-page React + Tailwind prototype that established every component, color, and layout decision in concrete code.
+
+That wireframe became the design contract. The next step was porting it to a real Next.js + MDX architecture, which I did through a series of staged Claude Code sessions: scaffolding and design system, remaining routes, build-in-public mechanics (RSS, sitemap, edit links), real copy, deploy. Each session had explicit acceptance criteria. I worked through them in order, verifying each before moving to the next.
+
+## What I learned
+
+The biggest lesson was about the value of an explicit design contract. A wireframe alone isn't enough — too many small details get re-decided in implementation. A written spec alone isn't enough either — language is too imprecise to capture visual decisions. The pair of them is what works. The wireframe locks the visual decisions in code; the spec captures the architecture, content model, and conventions in prose. Together, they let me hand off whole work blocks to Claude Code with high confidence.

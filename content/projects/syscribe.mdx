@@ -3,28 +3,44 @@ title: "Syscribe"
 status: "Building"
 category: "Software"
 summary: "AI-powered documentation that auto-generates from PR diffs and ships when humans approve."
-weekMarker: "Week 5 of 12"
 currentFocus:
-  - "Reducing changelog noise: shipping a role-aware diff pipeline that filters out internal refactors before they reach the writer model."
-  - "Designing the human-in-the-loop review surface. Aiming for a one-keystroke approve / edit / discard flow."
+  - "Phase 5: working public production and staging for true beta customers."
+  - "Building out the infrastructure that goes with it — both technical, and the cost model for when to use SaaS versus build."
 links:
-  - label: "syscribe.dev"
-    href: "#"
-  - label: "Waitlist"
-    href: "#"
-  - label: "Related writing"
-    href: "#"
-draft: false
+  - label: "syscribe.ai"
+    href: "https://syscribe.ai"
 ---
 
-Syscribe is a documentation platform for teams that ship faster than they can write. It watches your pull requests, drafts the changelog entry, the user-facing release note, and (optionally) the internal Loom-style summary — then waits for a human to approve before anything is published.
+# Syscribe
 
-I started building it because every engineering org I've worked in has the same broken loop: PRs get merged, documentation drifts, and within six months the internal wiki is a lie. The teams that solve it spend a real percentage of their cycle time writing release notes by hand. That cost is invisible until you measure it.
+Syscribe is an AI-powered documentation platform. It sits between a customer's code and their existing documentation systems, auto-generates docs from PR diffs, routes them for human approval, and deploys when the PR merges.
 
-### What's hard
+## What it is
 
-The model is not the hard part. Routing is. Knowing which changes deserve a customer-facing line, which are internal-only, and which should be silently swallowed is mostly a taxonomy problem and partly a context problem. We're solving it with a small classifier that runs ahead of the writer model, and a per-repo policy that gets richer the more it ships.
+Documentation is one of those problems that everyone has and nobody actually solves. Engineers don't want to write it. Product managers don't usually have time to write it. Product marketing may not have the required technical depth to write it. By the time anyone gets around to updating it, it's already wrong. The result, in most companies, is that documentation lives in some half-rotted state — partially accurate, partially out of date, and trusted by no one.
 
-### What I'm learning
+Syscribe's bet is that the right place to generate documentation is at the moment the code changes, with the engineer who changed it in the loop. Every PR triggers a generation pass. The output is reviewed by a human (cheap because the AI did the writing, fast because the diff is small), and ships when the PR merges. The documentation stays alive because it's regenerated continuously, not because someone is fighting to keep it alive.
 
-Selling to small engineering teams is a different motion to anything I've done. Buying committees of one. Cycles measured in days, not quarters. I've talked to thirty-eight teams in the last six weeks and the pattern is consistent enough that I trust it.
+There are two product modes. **Embedded** sits between a customer's CI/CD and their existing documentation systems — Notion, Confluence, ReadMe, whatever they're already using. It's the low-friction way in: their docs improve without their workflow changing. **Hosted** is the expand motion — Syscribe hosts the documentation portal end-to-end, with semantic search, multi-audience rendering, API playgrounds, and coverage scoring.
+
+## Why I'm building it
+
+I've worked in companies where documentation was the single biggest unforced error. Onboarding took twice as long as it should have. Engineers re-derived the same context from scratch. Sales answered customer questions the docs should have answered. The cost of bad documentation is enormous and almost completely invisible because nobody can attribute it to a specific dollar.
+
+With the increasing pace of product development as a function of agentic engineering, the speed with which documentation has to be created and deployed is also increasing. Coupled with those same agents relying on potentially outdated documentation, there's a real information gap that's only going to grow.
+
+I also think this is one of the few problems where the current generation of AI tools — particularly Claude's coding and reasoning capabilities — actually changes what's possible, rather than just incrementally improving an existing workflow. Generating accurate, audience-aware documentation from a code diff was theoretically possible before; in practice it required so much manual prompting and editing that nobody did it. With the right pipeline, it's now a background process.
+
+## What's hard
+
+The technical surface is broader than it looks. Ingesting code well requires real parsing (Tree-sitter, simple-git, careful handling of monorepos and partial diffs). Routing for human approval requires a UI that respects engineer time and doesn't get in the way. Deploying to dozens of downstream systems requires an integration bus that's resilient to their quirks. And the AI engine itself has to be tuned to not over-generate — the worst version of this product is one that floods reviewers with low-quality drafts.
+
+The harder problem is product, though. Documentation is an instrumented version of trust. Customers don't trust documentation that's wrong, and they don't read documentation that's noisy. The product has to consistently produce signal, not noise, or the whole loop breaks.
+
+## What I'm learning
+
+A lot, fast. The most useful lesson so far has been about the difference between "build this with AI" as a marketing claim and "build this with AI in a way that's structurally reliable." The first is easy and everyone is doing it. The second requires real engineering discipline around prompt design, evaluation harnesses, fallback behavior, and cost management. I'm finding that the gap between a working AI feature and a production-ready AI product is mostly engineering, not AI.
+
+The other thing I'm learning is what it actually costs — both in API spend and in time — to build something solo at the quality bar I want. Cheaper than I expected on inference. Slower than I expected on integrations. About what I expected on infrastructure.
+
+I'm also writing a [log entry per phase](/log) on what's changing as the product matures. Right now: getting working public production and staging for beta customers, and figuring out where to use SaaS versus where to build.

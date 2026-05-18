@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { MDXRemote } from "next-mdx-remote/rsc";
+import { mdxComponents } from "@/components/mdx-components";
 import { PageShell } from "@/components/page-shell";
 import { getAllProjects, getProject } from "@/lib/content";
 
@@ -22,14 +23,6 @@ export async function generateMetadata({
     description: project.summary,
   };
 }
-
-const mdxComponents = {
-  h3: (props: React.HTMLAttributes<HTMLHeadingElement>) => <h3 {...props} />,
-  p: (props: React.HTMLAttributes<HTMLParagraphElement>) => <p {...props} />,
-  a: ({ href = "#", ...props }: React.AnchorHTMLAttributes<HTMLAnchorElement>) => (
-    <a href={href} {...props} />
-  ),
-};
 
 export default async function ProjectPage({
   params,
