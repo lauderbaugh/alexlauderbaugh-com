@@ -1,5 +1,6 @@
 import { Fragment } from "react";
 import { SITE } from "@/lib/site";
+import { SmartLink } from "./smart-link";
 
 interface FooterProps {
   sourcePath?: string;
@@ -20,20 +21,20 @@ export function Footer({ sourcePath }: FooterProps) {
         {SITE.social.map((s, i) => (
           <Fragment key={s.label}>
             {i > 0 && <span className="mx-1.5 text-rule dark:text-d-rule">·</span>}
-            <a href={s.href} className="link hover:text-ink dark:hover:text-d-ink">
+            <SmartLink href={s.href} className="link hover:text-ink dark:hover:text-d-ink">
               {s.label}
-            </a>
+            </SmartLink>
           </Fragment>
         ))}
       </p>
       {editUrl && (
         <p className="mt-4">
-          <a
+          <SmartLink
             href={editUrl}
             className="arrow-link mono text-[12px] text-muted dark:text-d-muted hover:text-ink dark:hover:text-d-ink"
           >
             <span className="arrow">→</span> Edit this page on github
-          </a>
+          </SmartLink>
         </p>
       )}
     </footer>

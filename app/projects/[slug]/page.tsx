@@ -4,6 +4,7 @@ import Link from "next/link";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import { mdxComponents } from "@/components/mdx-components";
 import { PageShell } from "@/components/page-shell";
+import { SmartLink } from "@/components/smart-link";
 import { getAllProjects, getProject } from "@/lib/content";
 
 export function generateStaticParams() {
@@ -81,13 +82,13 @@ export default async function ProjectPage({
           <ul className="flex flex-wrap gap-x-5 gap-y-2 text-[14px]">
             {project.links.map((l) => (
               <li key={l.label}>
-                <a
+                <SmartLink
                   href={l.href}
                   className="arrow-link inline-flex items-center gap-1.5 text-accent dark:text-d-accent hover:text-accent-hover dark:hover:text-d-accent-hover"
                 >
                   <span className="arrow">→</span>
                   {l.label}
-                </a>
+                </SmartLink>
               </li>
             ))}
           </ul>

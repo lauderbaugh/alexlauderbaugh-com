@@ -5,6 +5,7 @@ import { LogEntryCard } from "@/components/log-entry-card";
 import { mdxComponents } from "@/components/mdx-components";
 import { PageShell } from "@/components/page-shell";
 import { Portrait } from "@/components/portrait";
+import { SmartLink } from "@/components/smart-link";
 import { getAllLogEntries, getAllProjects, getBooks } from "@/lib/content";
 import { SITE } from "@/lib/site";
 
@@ -39,9 +40,9 @@ export default function HomePage() {
           {SITE.social.slice(0, 4).map((s, i) => (
             <Fragment key={s.label}>
               {i > 0 && <span className="mx-1.5 text-rule dark:text-d-rule">·</span>}
-              <a href={s.href} className="link hover:text-ink dark:hover:text-d-ink">
+              <SmartLink href={s.href} className="link hover:text-ink dark:hover:text-d-ink">
                 {s.label}
-              </a>
+              </SmartLink>
             </Fragment>
           ))}
         </p>
