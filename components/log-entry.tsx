@@ -33,6 +33,11 @@ export function LogEntryView({ entry, compact = false }: LogEntryProps) {
               · {entry.project}
             </span>
           )}
+          {entry.rating && (
+            <span className="mono text-[11px] tracking-[0.14em] text-muted dark:text-d-muted">
+              · {entry.rating}
+            </span>
+          )}
         </div>
         <h3 className="serif text-[22px] font-medium leading-snug tracking-tight">
           {entry.title}
@@ -40,11 +45,6 @@ export function LogEntryView({ entry, compact = false }: LogEntryProps) {
         {entry.author && (
           <p className="text-[14px] text-muted dark:text-d-muted mt-1">
             {entry.author}
-            {entry.rating && (
-              <span className="mono text-[12px] ml-3 text-accent dark:text-d-accent">
-                ★ {entry.rating}
-              </span>
-            )}
           </p>
         )}
         <div className="prose-body mt-3 text-[16px] text-ink dark:text-d-ink max-w-[58ch]">

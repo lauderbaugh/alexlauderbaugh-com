@@ -100,8 +100,8 @@ export default function HomePage() {
                     )}
                   </div>
                   {b.rating && (
-                    <span className="mono text-[12px] text-accent dark:text-d-accent">
-                      ★ {b.rating}
+                    <span className="mono text-[12px] text-muted dark:text-d-muted">
+                      {b.rating}
                     </span>
                   )}
                 </div>

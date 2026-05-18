@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const LOG_TYPES = ["build", "book", "note", "ship"] as const;
-export const RATINGS = ["would re-read", "good", "skim"] as const;
+export const RATINGS = ["Required", "Recommended", "Good", "Skippable", "Unfinished"] as const;
 export const STATUSES = ["Building", "Active", "Shipped", "Archived"] as const;
 export const CATEGORIES = ["Software", "Athletics"] as const;
 
