@@ -54,14 +54,14 @@ export function Header() {
 
   return (
     <header className="pt-10 sm:pt-14 pb-8">
-      <div className="flex items-baseline justify-between gap-6">
+      <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-4 sm:gap-6">
         <Link
           href="/"
           className="serif text-[17px] font-medium tracking-tight hover:text-accent dark:hover:text-d-accent transition-colors"
         >
           {SITE.name}
         </Link>
-        <nav className="flex items-center gap-5 sm:gap-7">
+        <nav className="flex flex-wrap items-center gap-x-5 gap-y-2 sm:gap-x-7">
           {NAV.map((item) => {
             const active =
               pathname === item.href || pathname.startsWith(`${item.href}/`);
