@@ -1,0 +1,13 @@
+---
+title: "Railway, GCP, and the cost of managed everything"
+date: 2026-05-22
+type: note
+project: "Syscribe"
+draft: false
+---
+
+While verifying Syscribe's staging deployment on Railway last week, Google Cloud blocked Railway's entire account mid-debug. The platform went down for hours and left our staging environment in a half-broken state we couldn't fix because the dashboard itself was degraded. The proximate issues on our side were small (an unset env var, a hardcoded port mismatched against the routing config), but they were hard to diagnose against a flaky control plane. Six hours on what was probably thirty minutes of actual fixable work.
+
+Managed services like Railway, Vercel, and Neon let a solo founder ship at a pace self-hosted infrastructure can't match. The cost is that when one degrades, you lose the observability and recovery options you'd have if you owned the substrate. A single-vendor PaaS built on a single cloud creates concentration risk that compounds in exactly the moments you need the platform most.
+
+Longer-term, Syscribe should be portable enough to fall back to another cloud when a single provider goes down. Not today, not at this stage, but it belongs on the list.
