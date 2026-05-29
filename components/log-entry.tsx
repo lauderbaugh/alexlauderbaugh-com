@@ -1,4 +1,6 @@
+import Link from "next/link";
 import { MDXRemote } from "next-mdx-remote/rsc";
+import { getProject } from "@/lib/content";
 import { formatDate } from "@/lib/github";
 import type { LogEntry } from "@/lib/types";
 import { mdxComponents } from "./mdx-components";
@@ -13,6 +15,10 @@ export function LogEntryView({ entry, compact = false }: LogEntryProps) {
   const visibleBody = compact
     ? (entry.body.split(/\n\s*\n/)[0] ?? "").trim()
     : entry.body;
+  // Resolve the project by slug so the label shows the canonical title and
+  // links to the project page. Falls back to the raw frontmatter string if
+  // the value doesn't match a known project.
+  const project = entry.project ? getProject(entry.project) : null;
 
   return (
     <article className="grid grid-cols-1 sm:grid-cols-[110px_1fr] gap-x-8 gap-y-2 py-7">
@@ -26,7 +32,17 @@ export function LogEntryView({ entry, compact = false }: LogEntryProps) {
           <TypeBadge type={entry.type} />
           {entry.project && (
             <span className="mono text-[11px] tracking-[0.14em] text-muted dark:text-d-muted">
-              · {entry.project}
+              ·{" "}
+              {project ? (
+                <Link
+                  href={`/projects/${project.slug}`}
+                  className="hover:text-ink dark:hover:text-d-ink transition-colors"
+                >
+                  {project.title}
+                </Link>
+              ) : (
+                entry.project
+              )}
             </span>
           )}
           {entry.rating && (

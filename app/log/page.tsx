@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { FilterRow } from "@/components/filter-row";
 import { LogEntryView } from "@/components/log-entry";
 import { PageShell } from "@/components/page-shell";
-import { getAllLogEntries } from "@/lib/content";
+import { getAllLogEntries, getProject } from "@/lib/content";
 import { LOG_TYPES, type LogType } from "@/lib/types";
 
 export const metadata: Metadata = {
@@ -26,11 +27,16 @@ function isLogType(v: string | undefined): v is LogType {
 export default async function LogPage({
   searchParams,
 }: {
-  searchParams: Promise<{ filter?: string }>;
+  searchParams: Promise<{ filter?: string; project?: string }>;
 }) {
-  const { filter } = await searchParams;
+  const { filter, project: projectSlug } = await searchParams;
   const entries = getAllLogEntries();
-  const visible = isLogType(filter) ? entries.filter((e) => e.type === filter) : entries;
+  const project = projectSlug ? getProject(projectSlug) : null;
+  const visible = entries
+    .filter((e) => (isLogType(filter) ? e.type === filter : true))
+    .filter((e) => (project ? e.project === project.slug : true));
+  // Clearing the project filter preserves any active type filter.
+  const showAllHref = isLogType(filter) ? `/log?filter=${filter}` : "/log";
 
   return (
     <PageShell>
@@ -44,6 +50,17 @@ export default async function LogPage({
 
       <div className="pb-2 border-b border-rule dark:border-d-rule">
         <FilterRow options={FILTER_OPTIONS} />
+        {project && (
+          <p className="mt-3 mono text-[12px] text-muted dark:text-d-muted">
+            Filtered to {project.title} ·{" "}
+            <Link
+              href={showAllHref}
+              className="text-accent dark:text-d-accent hover:text-accent-hover dark:hover:text-d-accent-hover"
+            >
+              show all
+            </Link>
+          </p>
+        )}
       </div>
 
       <div className="divide-y divide-rule dark:divide-d-rule">

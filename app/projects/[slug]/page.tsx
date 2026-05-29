@@ -5,7 +5,7 @@ import { MDXRemote } from "next-mdx-remote/rsc";
 import { mdxComponents } from "@/components/mdx-components";
 import { PageShell } from "@/components/page-shell";
 import { SmartLink } from "@/components/smart-link";
-import { getAllProjects, getProject } from "@/lib/content";
+import { getAllLogEntries, getAllProjects, getProject } from "@/lib/content";
 
 export function generateStaticParams() {
   return getAllProjects().map((p) => ({ slug: p.slug }));
@@ -33,6 +33,7 @@ export default async function ProjectPage({
   const { slug } = await params;
   const project = getProject(slug);
   if (!project) notFound();
+  const hasLogEntries = getAllLogEntries().some((e) => e.project === project.slug);
 
   return (
     <PageShell sourcePath={project.sourcePath}>
@@ -73,6 +74,18 @@ export default async function ProjectPage({
       <section className="prose-body mt-12 text-[17px] text-ink dark:text-d-ink max-w-[58ch]">
         <MDXRemote source={project.body} components={mdxComponents} />
       </section>
+
+      {hasLogEntries && (
+        <div className="mt-14 pt-6 border-t border-rule dark:border-d-rule">
+          <Link
+            href={`/log?project=${project.slug}`}
+            className="arrow-link inline-flex items-center mono text-[12px] uppercase tracking-[0.14em] text-accent dark:text-d-accent hover:text-accent-hover dark:hover:text-d-accent-hover"
+          >
+            <span className="arrow">→</span>
+            <span className="ml-1">All log entries for {project.title}</span>
+          </Link>
+        </div>
+      )}
 
       {project.links.length > 0 && (
         <div className="mt-14 pt-6 border-t border-rule dark:border-d-rule">
