@@ -1,0 +1,17 @@
+---
+title: "Four bugs wearing the same error message"
+date: 2026-05-30
+type: build
+project: syscribe
+draft: false
+---
+
+Syscribe staging is now web-hosted—something I can open in a browser and click around, instead of running only on my laptop. Getting there cost the better part of a few days, and the lesson wasn't in any single fix. It was that one symptom can sit on top of a stack of unrelated causes, each masquerading as the last.
+
+Every failure looked identical from the outside: something that should have had a value was reading as `undefined`. A sensitive flag on a public key. A production auth instance refusing to run on a preview domain. An API verifying tokens against the wrong secret. And the worst one—a web app that, missing its API URL at build time, quietly fell back to `localhost:3001`, so the deployed site was cheerfully trying to reach a server on my laptop. That one failed by succeeding at the wrong thing.
+
+Four distinct bugs, one symptom. Each time I fixed one, the next surfaced looking the same, and the tempting read was "my fix didn't work" rather than "I've peeled off a layer and found another."
+
+What actually closed it wasn't the four patches. Underneath them were a couple of decisions we'd made for simplicity that turned out to be directly opposed to what the services require. We'd run a single auth tenant across every environment; Clerk's production instances flatly refuse to operate on a preview domain. We'd leaned on a localhost default so local dev needed no extra config; a deployed build has no localhost to fall back to. Neither conflict was visible until we'd dug past the identical symptoms to the root—the sameness of the failures is what kept the architectural problem hidden.
+
+The fix was structural: split the auth tenants by environment, and make the build refuse to run without a real API URL instead of guessing one. The boring artifact that records it—a short doc saying which secret lives where—turns "why is staging down again" into a lookup instead of an investigation.
