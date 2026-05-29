@@ -8,7 +8,7 @@ import { LOG_TYPES, type LogType } from "@/lib/types";
 export const metadata: Metadata = {
   title: "Log",
   description:
-    "Everything I write, build, read, and ship. Reverse chronological, no categories that aren't earned.",
+    "The things I'm currently writing, building, reading, and shiping. Reverse chronological.",
 };
 
 const FILTER_OPTIONS = [
