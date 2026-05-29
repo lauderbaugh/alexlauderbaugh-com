@@ -138,7 +138,7 @@ Body is MDX. Use `### What's hard` and `### What I'm learning` style sub-heading
 ### Sort/filter logic
 
 - **Log feed**: reverse chronological by `date`. Filter by `type`. Hide `draft: true`.
-- **Books page**: filter log to `type: book`, reverse chronological. Show running counter ("X read this year · Y total in 2026").
+- **Books page**: filter log to `type: book`, reverse chronological. Counter ("X read this year") is sourced from Goodreads via the public "read" shelf RSS feed (`lib/goodreads.ts`), refreshed daily via ISR — not the on-site reviewed count.
 - **Projects index**: sort by status `[Building, Active, Shipped, Archived]`, then by most recent. Filter by `category` (`All / Software / Athletics`). Hide `draft: true`.
 - **Homepage "Latest"**: single most recent log entry, any type.
 - **Homepage "Building"**: the first `status: Building, category: Software` project. (Pan Pacs is Building/Athletics — it shouldn't take the homepage slot.)

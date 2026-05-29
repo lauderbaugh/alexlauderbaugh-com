@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { LogEntryView } from "@/components/log-entry";
 import { PageShell } from "@/components/page-shell";
 import { getBooks } from "@/lib/content";
+import { getBooksReadInYear } from "@/lib/goodreads";
 
 export const metadata: Metadata = {
   title: "Books",
@@ -9,8 +10,13 @@ export const metadata: Metadata = {
     "What I've been reading, with the running counter. The rating is a single signal: would I re-read it, would I skim it, would I pass.",
 };
 
-export default function BooksPage() {
+// Refresh the Goodreads read count once a day without a redeploy.
+export const revalidate = 86400;
+
+export default async function BooksPage() {
   const books = getBooks();
+  const year = new Date().getFullYear();
+  const readThisYear = (await getBooksReadInYear(year)) ?? books.length;
 
   return (
     <PageShell>
@@ -21,7 +27,7 @@ export default function BooksPage() {
           single signal: would I re-read it, would I skim it, would I pass.
         </p>
         <p className="mt-4 mono text-[12px] text-accent dark:text-d-accent">
-          {books.length} read this year · 14 total in 2026
+          {readThisYear} read this year
         </p>
       </section>
 
