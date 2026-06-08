@@ -89,31 +89,50 @@ export default function HomePage() {
             Recently read
           </h2>
           <ul className="divide-y divide-rule dark:divide-d-rule border-t border-b border-rule dark:border-d-rule">
-            {recentBooks.map((b) => (
-              <li key={b.slug} className="py-4">
-                <div className="flex items-baseline justify-between gap-6 flex-wrap">
-                  <div>
-                    <span className="serif text-[18px] font-medium">{b.title}</span>
-                    {b.author && (
-                      <span className="text-[14px] text-muted dark:text-d-muted ml-2">
-                        {b.author}
+            {recentBooks.map((b) => {
+              const TEASER_CHARS = 240;
+              const firstPara = (b.body.split(/\n\s*\n/)[0] ?? "").trim();
+              let teaser = firstPara;
+              if (firstPara.length > TEASER_CHARS) {
+                const sentences = firstPara.split(/(?<=[.!?])\s+/);
+                const picked: string[] = [];
+                let len = 0;
+                for (const s of sentences) {
+                  picked.push(s);
+                  len = picked.join(" ").length;
+                  if (len >= TEASER_CHARS) break;
+                }
+                teaser = picked.join(" ");
+              }
+              const hasMore = teaser !== firstPara || firstPara !== b.body.trim();
+              return (
+                <li key={b.slug} className="py-4">
+                  <div className="flex items-baseline justify-between gap-6 flex-wrap">
+                    <div>
+                      <span className="serif text-[18px] font-medium">{b.title}</span>
+                      {b.author && (
+                        <span className="text-[14px] text-muted dark:text-d-muted ml-2">
+                          {b.author}
+                        </span>
+                      )}
+                    </div>
+                    {b.rating && (
+                      <span className="mono text-[12px] text-muted dark:text-d-muted">
+                        {b.rating}
                       </span>
                     )}
                   </div>
-                  {b.rating && (
-                    <span className="mono text-[12px] text-muted dark:text-d-muted">
-                      {b.rating}
-                    </span>
+                  <div className="prose-body text-[15px] mt-1.5 text-ink/85 dark:text-d-ink/85 max-w-[58ch]">
+                    <MDXRemote source={teaser} components={mdxComponents} />
+                  </div>
+                  {hasMore && (
+                    <ArrowLink href={`/log/${b.slug}`} className="mt-2">
+                      Continue
+                    </ArrowLink>
                   )}
-                </div>
-                <div className="prose-body text-[15px] mt-1.5 text-ink/85 dark:text-d-ink/85 max-w-[58ch]">
-                  <MDXRemote
-                    source={(b.body.split(/\n\s*\n/)[0] ?? "").trim()}
-                    components={mdxComponents}
-                  />
-                </div>
-              </li>
-            ))}
+                </li>
+              );
+            })}
           </ul>
           <ArrowLink href="/books" className="mt-4">
             All books
