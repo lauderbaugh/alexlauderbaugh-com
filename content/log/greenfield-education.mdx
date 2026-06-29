@@ -1,0 +1,13 @@
+---
+title: "A Greenfield Education"
+date: 2026-06-30
+type: build
+project: syscribe
+draft: false
+---
+
+I've brought many products from idea to market across multiple segments and have been close to every part of launch: prioritization, GTM strategy, late nights polishing features. But this is the first time I've done the actual greenfield environment setup and deployment. I'd assumed it would be relatively straightforward since I'd seen it done so many times, so I knew what the process should look like. While that's true, the doing is another matter. It's the BJJ version of watching a veteran black belt roll: the sequence looks smooth until you're the one on the mat, and you find out how much detail and technique you hadn't even registered. The gap between what I assumed and what's real is humbling, and the part I find most compelling.
+
+I'm comfortable with local development for fast feedback and full-stack control; with prototyping tools such as Replit, Claude Code Artifacts, etc.; and with existing production systems that are stable and well-instrumented. Syscribe is in none of those states right now, and this is an education. Bugs that stayed silent on my machine only surface once the services are split across environments, environment variables that lined up locally stop lining up, and several of these go wrong at once, so a single symptom rarely points to a single cause. Most of the work is figuring out which failures are real and which are just downstream of the others.
+
+Staging is nearly there. If the pace holds, I should have full production running within a week or so.
