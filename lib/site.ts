@@ -3,7 +3,7 @@ export const SITE = {
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://alexlauderbaugh.com",
   location: "Auckland, New Zealand",
   whereLine:
-    "Auckland · Building Syscribe · CPO at BettrData · Open to investor conversations.",
+    "Auckland · CPO at BettrData · Building Syscribe",
   intro:
     "Product leader and builder. Currently CPO at BettrData and building Syscribe, an AI-powered documentation platform. Based in Auckland — mostly writing about product, systems, and what I'm reading.",
   social: [
