@@ -6,8 +6,7 @@ import { getBooksReadInYear } from "@/lib/goodreads";
 
 export const metadata: Metadata = {
   title: "Books",
-  description:
-    "What I've been reading, with the running counter. The rating is a single signal: would I re-read it, would I skim it, would I pass.",
+  description: "What I've been reading, with the running counter.",
 };
 
 // Refresh the Goodreads read count once a day without a redeploy.
@@ -23,8 +22,7 @@ export default async function BooksPage() {
       <section className="pt-4 pb-8">
         <h1 className="serif text-[36px] font-medium tracking-tight">Books</h1>
         <p className="mt-3 text-[16px] leading-[1.7] text-muted dark:text-d-muted max-w-[58ch]">
-          What I&apos;ve been reading, with the running counter. The rating is a
-          single signal: would I re-read it, would I skim it, would I pass.
+          What I&apos;ve been reading, with the running counter.
         </p>
         <p className="mt-4 mono text-[12px] text-accent dark:text-d-accent">
           {readThisYear} read this year
