@@ -1,0 +1,25 @@
+---
+title: "Verdict"
+status: "Active"
+category: "Software"
+summary: "A weekly playlist built from critically reviewed albums, with a heuristic for selecting representative tracks."
+links:
+  - label: "github.com/lauderbaugh/verdict"
+    href: "https://github.com/lauderbaugh/verdict"
+---
+
+# Verdict
+
+Verdict is a small Python app that runs on GitHub Actions to gather well-reviewed albums from multiple sources and add selected tracks to a rolling four-week playlist.
+
+The primary goal was to break out of the inherent limitation of Spotify's own suggestion algorithm, which curates a playlist based on what you've recently listened to, which is often what Spotify has recently suggested. Obviously, this ends up narrowing rather than expanding the scope and variety of music that gets recommended. Music critics have already solved this problem, and sites like Pitchfork, Paste, Stereogum, and NPR are great sources for collecting critically reviewed albums.
+
+Those sources only occasionally name individual tracks, so I needed a way to pick which ones best represent an album. The result is a cascade of three tiers, in decreasing order of confidence:
+
+1. If the reviews name specific tracks, those become the candidates, up to four per album. A track named by more than one publication gets weighted higher.
+2. If no review names a track, take the two most-played from Last.fm. (Spotify closed the popularity field to apps in my tier earlier this year.)
+3. If Last.fm shows fewer than a thousand plays, take two tracks from positions two through seven, skipping anything under ninety seconds since those tend to be intros, skits, or transitions.
+
+The concept was to leverage explicit human judgement where possible, then human actions, and then a guess about how albums are structured.
+
+I'll keep adding sources as I find good ones, and recommendations are always welcome.
