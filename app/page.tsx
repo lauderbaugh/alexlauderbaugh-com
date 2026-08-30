@@ -75,7 +75,7 @@ export default function HomePage() {
             </div>
           </div>
           <p className="text-[16px] mt-3 leading-[1.7] text-ink dark:text-d-ink max-w-[58ch]">
-            {building.summary} A small team of one, shipping in public against a twelve-week clock.
+            {building.summary} In-flight and iterating.
           </p>
           <ArrowLink href={`/projects/${building.slug}`} className="mt-3">
             {building.title}
