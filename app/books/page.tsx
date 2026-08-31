@@ -22,13 +22,15 @@ export default async function BooksPage() {
 
   return (
     <PageShell>
-      <PageIntro {...PAGE}>
-        <p className="mt-4 mono text-[12px] text-accent dark:text-d-accent">
+      <PageIntro {...PAGE} />
+
+      <div className="pb-2 border-b border-rule dark:border-d-rule">
+        <p className="mono text-[12px] tracking-[0.14em] text-accent dark:text-d-accent">
           {readThisYear} read this year
         </p>
-      </PageIntro>
+      </div>
 
-      <div className="divide-y divide-rule dark:divide-d-rule border-t border-rule dark:border-d-rule">
+      <div className="divide-y divide-rule dark:divide-d-rule">
         {books.map((b) => (
           <LogEntryView key={b.slug} entry={b} />
         ))}
