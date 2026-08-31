@@ -2,15 +2,18 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { FilterRow } from "@/components/filter-row";
 import { LogEntryView } from "@/components/log-entry";
+import { PageIntro, type PageMeta } from "@/components/page-intro";
 import { PageShell } from "@/components/page-shell";
 import { getAllLogEntries, getProject } from "@/lib/content";
 import { LOG_TYPES, type LogType } from "@/lib/types";
 
-export const metadata: Metadata = {
+const PAGE: PageMeta = {
   title: "Log",
   description:
-    "The things I'm currently writing, building, reading, and shiping. Reverse chronological.",
+    "The things I'm currently writing, building, reading, and shipping. Reverse chronological.",
 };
+
+export const metadata: Metadata = PAGE;
 
 const FILTER_OPTIONS = [
   { value: "all", label: "All" },
@@ -40,13 +43,7 @@ export default async function LogPage({
 
   return (
     <PageShell>
-      <section className="pt-4 pb-8">
-        <h1 className="serif text-[36px] font-medium tracking-tight">Log</h1>
-        <p className="mt-3 text-[16px] leading-[1.7] text-muted dark:text-d-muted max-w-[58ch]">
-          Everything I write, build, read, and ship. Reverse chronological, no
-          categories that aren't earned.
-        </p>
-      </section>
+      <PageIntro {...PAGE} />
 
       <div className="pb-2 border-b border-rule dark:border-d-rule">
         <FilterRow options={FILTER_OPTIONS} />
