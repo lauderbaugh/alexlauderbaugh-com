@@ -22,10 +22,8 @@ export function LogEntryView({ entry, compact = false }: LogEntryProps) {
 
   return (
     <article className="grid grid-cols-1 sm:grid-cols-[110px_1fr] gap-x-8 gap-y-2 py-7">
-      <div className="pt-1">
-        <div className="mono text-[12px] text-muted dark:text-d-muted">
-          {formatDate(entry.date)}
-        </div>
+      <div className="mono text-[11px] tracking-[0.14em] text-muted dark:text-d-muted">
+        {formatDate(entry.date)}
       </div>
       <div>
         <div className="flex items-center gap-3 mb-2">
