@@ -8,7 +8,7 @@ import { CATEGORIES, type ProjectCategory } from "@/lib/types";
 export const metadata: Metadata = {
   title: "Projects",
   description:
-    "Software and athletics, treated as peers. Each one has a deadline, an outcome that can be measured, and a plan that can be wrong.",
+    "Software, athletics, or anything that's interesting enough to talk about.",
 };
 
 const FILTER_OPTIONS = [
