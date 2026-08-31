@@ -39,8 +39,8 @@ export default async function ProjectsIndexPage({
       <section className="pt-4 pb-8">
         <h1 className="serif text-[36px] font-medium tracking-tight">Projects</h1>
         <p className="mt-3 text-[16px] leading-[1.7] text-muted dark:text-d-muted max-w-[58ch]">
-          Software and athletics, treated as peers. Each one has a deadline, an
-          outcome that can be measured, and a plan that can be wrong.
+          Software, athletics, or anything that&apos;s interesting enough to
+          talk about.
         </p>
       </section>
 
