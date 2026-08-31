@@ -51,6 +51,8 @@ body {
 
 .prose-body p { line-height: 1.7; }
 .prose-body p + p { margin-top: 1.1em; }
+/* A body that opens with a heading shouldn't push away from the page intro. */
+.prose-body > :first-child { margin-top: 0; }
 .prose-body h2 {
   font-family: var(--font-serif);
   font-weight: 500;

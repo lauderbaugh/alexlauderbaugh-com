@@ -21,9 +21,11 @@ export default function PrinciplesPage() {
   if (!principles) notFound();
   return (
     <PageShell sourcePath={principles.sourcePath}>
-      <PageIntro title={PAGE.title} />
-      <div className="prose-body text-[17px] text-ink dark:text-d-ink max-w-[58ch]">
-        <MDXRemote source={principles.body} components={mdxComponents} />
+      <PageIntro {...PAGE} />
+      <div className="pt-7 border-t border-rule dark:border-d-rule">
+        <div className="prose-body text-[17px] text-ink dark:text-d-ink max-w-[58ch]">
+          <MDXRemote source={principles.body} components={mdxComponents} />
+        </div>
       </div>
     </PageShell>
   );
