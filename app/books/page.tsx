@@ -12,13 +12,14 @@ const PAGE: PageMeta = {
 
 export const metadata: Metadata = PAGE;
 
-// Refresh the Goodreads read count once a day without a redeploy.
-export const revalidate = 86400;
+// Pick up the synced Goodreads count hourly without a redeploy.
+export const revalidate = 3600;
 
 export default async function BooksPage() {
   const books = getBooks();
   const year = new Date().getFullYear();
-  const readThisYear = (await getBooksReadInYear(year)) ?? books.length;
+  // null → no trustworthy count; hide the number rather than show a wrong one.
+  const readThisYear = await getBooksReadInYear(year);
 
   return (
     <PageShell>
@@ -26,7 +27,7 @@ export default async function BooksPage() {
 
       <div className="pb-2 border-b border-rule dark:border-d-rule">
         <p className="mono text-[12px] tracking-[0.14em] text-accent dark:text-d-accent">
-          {readThisYear} read this year
+          {readThisYear === null ? " " : `${readThisYear} read this year`}
         </p>
       </div>
 
