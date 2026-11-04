@@ -32,6 +32,7 @@ mkdir -p "$ENV_DIR" "$(dirname "$PLIST")"
 if [[ ! -f "$ENV_FILE" ]]; then
   cat > "$ENV_FILE" <<'EOF'
 # Secrets for scripts/goodreads-sync.mjs. Never commit this file.
+CHROME_PROFILE="Default"
 GOODREADS_COOKIE=""
 GLOBAL_CONFIG_ID=""
 VERCEL_TOKEN=""
