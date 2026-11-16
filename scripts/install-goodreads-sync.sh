@@ -44,6 +44,14 @@ EOF
 fi
 chmod 600 "$ENV_FILE"
 
+# The sync reads Chrome's cookie-encryption password from the env file, so
+# unattended runs never touch the Keychain (each access would prompt).
+if ! grep -q '^CHROME_SAFE_STORAGE_PASSWORD="..*"' "$ENV_FILE"; then
+  echo "Note: CHROME_SAFE_STORAGE_PASSWORD isn't set in $ENV_FILE, so the sync"
+  echo "will fall back to GOODREADS_COOKIE. To add it (one Keychain prompt):"
+  echo "  printf 'CHROME_SAFE_STORAGE_PASSWORD=\"%s\"\\n' \"\$(security find-generic-password -w -s 'Chrome Safe Storage')\" >> $ENV_FILE"
+fi
+
 cat > "$PLIST" <<EOF
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">

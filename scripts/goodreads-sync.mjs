@@ -11,6 +11,7 @@
 // Config lives outside the repo in ~/.config/alexlauderbaugh/goodreads-sync.env:
 //
 //   CHROME_PROFILE="Profile 2"   # Chrome profile dir signed in to Goodreads
+//   CHROME_SAFE_STORAGE_PASSWORD="..."  # added once by hand; the installer prints how
 //   GOODREADS_COOKIE="..."       # optional fallback: a copied Cookie header
 //   GLOBAL_CONFIG_ID="ecfg_..."
 //   VERCEL_TOKEN="<account token from the Vercel account that owns the site>"
@@ -72,16 +73,17 @@ function fail(message) {
 // macOS Chrome encrypts values with AES-128-CBC under a key derived from the
 // "Chrome Safe Storage" Keychain password; from DB version 24 the plaintext
 // is prefixed with a 32-byte SHA-256 of the host, which we drop.
-function readChromeCookie(profile) {
+//
+// The Keychain password comes from the env file (CHROME_SAFE_STORAGE_PASSWORD,
+// added once by hand; the installer prints the command). Reading the Keychain here would
+// raise a password prompt on every unattended run, since only Chrome is
+// trusted to read that item.
+function readChromeCookie(profile, password) {
+  if (!password) throw new Error("CHROME_SAFE_STORAGE_PASSWORD not set (run install-goodreads-sync.sh for the command that adds it)");
   const profileDir = join(homedir(), "Library/Application Support/Google/Chrome", profile);
   const dbPath = join(profileDir, "Cookies");
   if (!existsSync(dbPath)) throw new Error(`no Chrome cookie store at ${dbPath}`);
 
-  const password = execFileSync(
-    "security",
-    ["find-generic-password", "-w", "-s", "Chrome Safe Storage"],
-    { encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] },
-  ).trim();
   const key = pbkdf2Sync(password, "saltysalt", 1003, 16, "sha1");
 
   // Chrome keeps the DB open; read a private copy.
@@ -164,7 +166,7 @@ async function main() {
   // Prefer Chrome's live session; fall back to a copied cookie if present.
   const candidates = [];
   try {
-    candidates.push({ source: "Chrome", cookie: readChromeCookie(env.CHROME_PROFILE || "Default") });
+    candidates.push({ source: "Chrome", cookie: readChromeCookie(env.CHROME_PROFILE || "Default", env.CHROME_SAFE_STORAGE_PASSWORD) });
   } catch (err) {
     log(`couldn't read Chrome cookies (${err.message.split("\n")[0]}); trying env file`);
   }
