@@ -13,7 +13,6 @@ export const SITE = {
     { label: "Email", href: "mailto:hi@alexlauderbaugh.com" },
     { label: "RSS", href: "/feed.xml" },
   ],
-  lastUpdated: "May 14, 2026",
   repo: {
     owner: "lauderbaugh",
     name: "alexlauderbaugh-com",

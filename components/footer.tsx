@@ -1,5 +1,7 @@
 import { Fragment } from "react";
 import { SITE } from "@/lib/site";
+import { getAllLogEntries } from "@/lib/content";
+import { formatDate } from "@/lib/github";
 import { SmartLink } from "./smart-link";
 
 interface FooterProps {
@@ -11,11 +13,14 @@ export function Footer({ sourcePath }: FooterProps) {
   const editUrl = sourcePath
     ? `https://github.com/${repo.owner}/${repo.name}/blob/${repo.branch}/${sourcePath}`
     : null;
+  // "Last updated" tracks the newest published log entry, so it moves when content does.
+  const latest = getAllLogEntries()[0];
 
   return (
     <footer className="mt-24 pt-8 pb-14 border-t border-rule dark:border-d-rule">
       <p className="mono text-[12px] text-muted dark:text-d-muted">
-        {SITE.location} · Last updated {SITE.lastUpdated}
+        {SITE.location}
+        {latest && <> · Last updated {formatDate(latest.date)}</>}
       </p>
       <p className="text-[13px] mt-2 text-muted dark:text-d-muted">
         {SITE.social.map((s, i) => (
